@@ -45,6 +45,32 @@ The **Finance Tracker** is a Python application designed to help users manage th
 - Adding savings of $25 for an emergency fund.
 - Generating a report to see totals and net savings.
 
+- # Finance Tracker
+
+A simple finance tracker application built with Python and SQLite.
+
+## Features
+- Add income, expenses, and savings.
+- Generate reports on financial status.
+
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/finance_tracker.git
+   cd finance_tracker
+
+Run the application:
+bash
+python finance_tracker.py
+
+GUI Features Needed
+User-friendly interface for adding transactions.
+Display of transaction reports in a visually appealing format.
+Graphical representation of income, expenses, and savings.
+Contributing
+Please see CONTRIBUTING.md for details on how to contribute to this project.
+
+
 This project serves as a practical tool for tracking personal finances and provides an easy way to stay organized and informed about your financial health.
 
 Feel free to explore and adapt the code to fit your personal needs or integrate it with additional features!
