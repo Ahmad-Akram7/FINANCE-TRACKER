@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620">
+  <defs>
+    <linearGradient id="winGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c2128"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer bg -->
+  <rect width="900" height="620" fill="#090d12"/>
+
+  <!-- subtle grid -->
+  <defs>
+    <pattern id="g2" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#131920" stroke-width="0.6"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="620" fill="url(#g2)"/>
+
+  <!-- Terminal window -->
+  <rect x="30" y="30" width="840" height="560" rx="8" fill="#0d1117" filter="url(#shadow)" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Title bar -->
+  <rect x="30" y="30" width="840" height="42" rx="8" fill="url(#winGrad)"/>
+  <rect x="30" y="58" width="840" height="14" fill="url(#winGrad)"/>
+  <line x1="30" y1="72" x2="870" y2="72" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Traffic lights -->
+  <circle cx="58"  cy="51" r="7" fill="#ff5f57"/>
+  <circle cx="80"  cy="51" r="7" fill="#febc2e"/>
+  <circle cx="102" cy="51" r="7" fill="#28c840"/>
+
+  <!-- Window title -->
+  <text x="450" y="56" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#6e7681" text-anchor="middle">finance-tracker — zsh — 160×48</text>
+
+  <!-- ═══ CONTENT AREA ═══ -->
+
+  <!-- CMD 1: add income -->
+  <text x="60" y="105" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">❯</text>
+  <text x="78" y="105" font-family="'Courier New', monospace" font-size="13" fill="#c9d1d9">finance-tracker add -t income -a 3500 -c </text>
+  <text x="508" y="105" font-family="'Courier New', monospace" font-size="13" fill="#a5d6ff">"Monthly Salary"</text>
+  <text x="78" y="123" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">  ✓  </text>
+  <text x="118" y="123" font-family="'Courier New', monospace" font-size="13" fill="#8b949e">[INCOME] </text>
+  <text x="198" y="123" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">$3,500.00</text>
+  <text x="274" y="123" font-family="'Courier New', monospace" font-size="13" fill="#8b949e">  ·  Monthly Salary  </text>
+  <text x="456" y="123" font-family="'Courier New', monospace" font-size="13" fill="#484f58">(id=1)</text>
+
+  <!-- CMD 2: add expense -->
+  <text x="60" y="148" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">❯</text>
+  <text x="78" y="148" font-family="'Courier New', monospace" font-size="13" fill="#c9d1d9">finance-tracker add -t expense -a 240 -c </text>
+  <text x="512" y="148" font-family="'Courier New', monospace" font-size="13" fill="#a5d6ff">"Groceries"</text>
+  <text x="78" y="166" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">  ✓  </text>
+  <text x="118" y="166" font-family="'Courier New', monospace" font-size="13" fill="#8b949e">[EXPENSE] </text>
+  <text x="204" y="166" font-family="'Courier New', monospace" font-size="13" fill="#f85149">$240.00</text>
+  <text x="264" y="166" font-family="'Courier New', monospace" font-size="13" fill="#8b949e">  ·  Groceries</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="182" x2="840" y2="182" stroke="#21262d" stroke-width="1"/>
+
+  <!-- CMD 3: report -->
+  <text x="60" y="202" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">❯</text>
+  <text x="78" y="202" font-family="'Courier New', monospace" font-size="13" fill="#c9d1d9">finance-tracker report --period month</text>
+
+  <!-- Report table -->
+  <rect x="78" y="212" width="500" height="148" rx="3" fill="#0a0f14" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Table top border (double) -->
+  <text x="88" y="230" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ╔══════════════════════════════════════════════╗</text>
+  <text x="88" y="246" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║</text>
+  <text x="120" y="246" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">  📊  Financial Summary  ·  Month           </text>
+  <text x="536" y="246" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+  <text x="88" y="262" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ╠══════════════════════════════════════════════╣</text>
+
+  <!-- rows -->
+  <text x="88" y="278" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║</text>
+  <text x="120" y="278" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  Total Income                    </text>
+  <text x="430" y="278" font-family="'Courier New', monospace" font-size="12" fill="#3fb950">$3,500.00</text>
+  <text x="536" y="278" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+
+  <text x="88" y="293" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║</text>
+  <text x="120" y="293" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  Total Expenses                    </text>
+  <text x="436" y="293" font-family="'Courier New', monospace" font-size="12" fill="#f85149">$240.00</text>
+  <text x="536" y="293" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+
+  <text x="88" y="308" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║</text>
+  <text x="120" y="308" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  Total Savings                     </text>
+  <text x="436" y="308" font-family="'Courier New', monospace" font-size="12" fill="#79c0ff">$500.00</text>
+  <text x="536" y="308" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+
+  <text x="88" y="320" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║  </text>
+  <text x="120" y="320" font-family="'Courier New', monospace" font-size="12" fill="#30363d">  ──────────────────────────────────────────  </text>
+  <text x="536" y="320" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+
+  <text x="88" y="335" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ║</text>
+  <text x="120" y="335" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  Net  (Income − Expenses)          </text>
+  <text x="428" y="335" font-family="'Courier New', monospace" font-size="12" fill="#3fb950" filter="url(#glow)">$3,260.00</text>
+  <text x="536" y="335" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">║</text>
+
+  <text x="88" y="350" font-family="'Courier New', monospace" font-size="12" fill="#58a6ff">  ╚══════════════════════════════════════════════╝</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="372" x2="840" y2="372" stroke="#21262d" stroke-width="1"/>
+
+  <!-- CMD 4: breakdown -->
+  <text x="60" y="392" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">❯</text>
+  <text x="78" y="392" font-family="'Courier New', monospace" font-size="13" fill="#c9d1d9">finance-tracker breakdown --type expense</text>
+
+  <!-- Breakdown table -->
+  <rect x="78" y="402" width="740" height="130" rx="3" fill="#0a0f14" stroke="#30363d" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="92" y="420" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9" font-weight="bold"> Category</text>
+  <text x="350" y="420" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9" font-weight="bold">Amount</text>
+  <text x="470" y="420" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9" font-weight="bold">Share</text>
+  <line x1="88" y1="426" x2="808" y2="426" stroke="#30363d" stroke-width="1"/>
+
+  <!-- row 1 -->
+  <text x="92" y="442" font-family="'Courier New', monospace" font-size="12" fill="#d29922"> Rent</text>
+  <text x="350" y="442" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">$1,200.00</text>
+  <text x="470" y="442" font-family="'Courier New', monospace" font-size="12" fill="#8b949e"> 48.3%</text>
+  <rect x="540" y="432" width="97" height="10" rx="1" fill="#1a2535"/>
+  <rect x="540" y="432" width="97" height="10" rx="1" fill="#d29922" opacity="0.7"/>
+
+  <!-- row 2 -->
+  <text x="92" y="460" font-family="'Courier New', monospace" font-size="12" fill="#d29922"> Groceries</text>
+  <text x="350" y="460" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">  $480.00</text>
+  <text x="470" y="460" font-family="'Courier New', monospace" font-size="12" fill="#8b949e"> 19.3%</text>
+  <rect x="540" y="450" width="38" height="10" rx="1" fill="#1a2535"/>
+  <rect x="540" y="450" width="38" height="10" rx="1" fill="#f85149" opacity="0.7"/>
+
+  <!-- row 3 -->
+  <text x="92" y="478" font-family="'Courier New', monospace" font-size="12" fill="#d29922"> Transport</text>
+  <text x="350" y="478" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">  $320.00</text>
+  <text x="470" y="478" font-family="'Courier New', monospace" font-size="12" fill="#8b949e"> 12.8%</text>
+  <rect x="540" y="468" width="26" height="10" rx="1" fill="#1a2535"/>
+  <rect x="540" y="468" width="26" height="10" rx="1" fill="#58a6ff" opacity="0.7"/>
+
+  <!-- row 4 -->
+  <text x="92" y="496" font-family="'Courier New', monospace" font-size="12" fill="#d29922"> Utilities</text>
+  <text x="350" y="496" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">  $180.00</text>
+  <text x="470" y="496" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  7.2%</text>
+  <rect x="540" y="486" width="14" height="10" rx="1" fill="#1a2535"/>
+  <rect x="540" y="486" width="14" height="10" rx="1" fill="#79c0ff" opacity="0.7"/>
+
+  <!-- row 5 -->
+  <text x="92" y="514" font-family="'Courier New', monospace" font-size="12" fill="#d29922"> Dining</text>
+  <text x="350" y="514" font-family="'Courier New', monospace" font-size="12" fill="#c9d1d9">  $140.00</text>
+  <text x="470" y="514" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">  5.6%</text>
+  <rect x="540" y="504" width="11" height="10" rx="1" fill="#1a2535"/>
+  <rect x="540" y="504" width="11" height="10" rx="1" fill="#3fb950" opacity="0.7"/>
+
+  <!-- cursor line -->
+  <text x="60" y="550" font-family="'Courier New', monospace" font-size="13" fill="#3fb950">❯</text>
+  <rect x="78" y="539" width="9" height="14" fill="#3fb950" opacity="0.85"/>
+
+  <!-- Bottom fade -->
+  <rect x="30" y="540" width="840" height="50" rx="0" fill="url(#winGrad)" opacity="0.5"/>
+  <rect x="30" y="562" width="840" height="28" rx="0" fill="#0d1117"/>
+  <rect x="30" y="578" width="840" height="12" rx="0" fill="#0d1117"/>
+</svg>
