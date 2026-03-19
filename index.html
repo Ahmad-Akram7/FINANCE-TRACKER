@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Tracker — Personal Finance CLI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:     #0e0e0e;
+      --paper:   #f7f4ef;
+      --cream:   #ede9e0;
+      --rule:    #d6d0c4;
+      --muted:   #9b9488;
+      --green:   #1a7a4a;
+      --green-l: #e8f5ee;
+      --red:     #b33a3a;
+      --red-l:   #fdf0ef;
+      --gold:    #b8860b;
+      --gold-l:  #fdf8ec;
+      --blue:    #1a4a7a;
+      --blue-l:  #eef3fb;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'Syne', sans-serif;
+      --font-mono:  'DM Mono', 'Courier New', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 60px;
+      background: rgba(247,244,239,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo em { color: var(--green); font-style: italic; }
+
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      background: var(--ink) !important;
+      color: var(--paper) !important;
+      padding: 0.45rem 1.2rem;
+      border-radius: 2px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--green) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 3rem 4rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      gap: 4rem;
+    }
+
+    .hero-left { position: relative; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--green);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-dark {
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+    }
+    .btn-dark:hover { background: var(--green); border-color: var(--green); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+    /* ── HERO RIGHT: big terminal ── */
+    .hero-right { position: relative; }
+
+    .terminal-card {
+      background: var(--ink);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 12px 16px 0 0 var(--rule), 0 30px 60px rgba(0,0,0,0.15);
+    }
+
+    .tc-bar {
+      background: #1c1c1c;
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid #2e2e2e;
+    }
+
+    .tc-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .tc-r { background: #ff5f57; }
+    .tc-y { background: #febc2e; }
+    .tc-g { background: #28c840; }
+    .tc-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #666;
+      margin: 0 auto;
+    }
+
+    .tc-body {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: #ccc;
+    }
+
+    .tc-prompt { color: #3fb950; }
+    .tc-cmd    { color: #fff; }
+    .tc-out    { color: #8b949e; }
+    .tc-green  { color: #3fb950; }
+    .tc-red    { color: #f85149; }
+    .tc-cyan   { color: #58a6ff; }
+    .tc-gold   { color: #d29922; }
+    .tc-cursor {
+      display: inline-block;
+      width: 7px; height: 1em;
+      background: #3fb950;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* floating label */
+    .float-label {
+      position: absolute;
+      top: -1rem; right: -1rem;
+      background: var(--green);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      padding: 0.35rem 0.75rem;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── TICKER STRIP ── */
+    .ticker {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.75rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-flex;
+      gap: 4rem;
+      animation: scroll 30s linear infinite;
+    }
+
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+    .ticker-item .up   { color: #3fb950; }
+    .ticker-item .down { color: #f85149; }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 3rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .section-title em { font-style: italic; color: var(--green); }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 500px;
+      font-size: 0.95rem;
+    }
+
+    /* ── FEATURES ── */
+    .features-bg { background: var(--cream); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+      border: 2px solid var(--ink);
+    }
+
+    .feat-card {
+      background: var(--paper);
+      padding: 2.5rem 2rem;
+      border: none;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .feat-card:hover { background: var(--cream); }
+
+    .feat-num {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-style: italic;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 1rem;
+      transition: color 0.2s;
+    }
+
+    .feat-card:hover .feat-num { color: var(--green); }
+
+    .feat-title {
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .feat-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── COMMANDS ── */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .cmd-block {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .cmd-header {
+      background: var(--ink);
+      padding: 0.65rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cmd-name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #3fb950;
+      font-weight: 500;
+    }
+
+    .cmd-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .tag-new  { background: rgba(63,185,80,0.15); color: #3fb950; }
+    .tag-core { background: rgba(88,166,255,0.12); color: #58a6ff; }
+
+    .cmd-body {
+      background: #0d1117;
+      padding: 1rem 1.2rem;
+    }
+
+    .cmd-usage {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #8b949e;
+      line-height: 1.8;
+    }
+
+    .cmd-usage .flag { color: #58a6ff; }
+    .cmd-usage .val  { color: #d29922; }
+    .cmd-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.75rem 1.2rem;
+      background: var(--paper);
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── INSTALL ── */
+    .install-bg { background: var(--ink); color: var(--paper); }
+
+    .install-bg .section-label { color: #3fb950; }
+    .install-bg .section-title { color: var(--paper); }
+    .install-bg .section-title em { color: #3fb950; }
+    .install-bg .section-desc   { color: #8b949e; }
+
+    .install-steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .install-step {
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .step-head {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .step-n {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-style: italic;
+      color: #3fb950;
+      line-height: 1;
+    }
+
+    .step-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--paper);
+    }
+
+    .step-code {
+      background: #0d1117;
+      padding: 1.2rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #c9d1d9;
+      line-height: 1.9;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .step-code .cm { color: #8b949e; }  /* comment */
+    .step-code .kw { color: #ff7b72; }  /* keyword */
+    .step-code .st { color: #a5d6ff; }  /* string */
+    .step-code .gr { color: #3fb950; }  /* green */
+
+    /* ── ARCHITECTURE ── */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .arch-card {
+      border: 2px solid var(--rule);
+      padding: 1.75rem 1.5rem;
+      border-radius: 3px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .arch-card:hover {
+      border-color: var(--green);
+      box-shadow: 4px 4px 0 var(--green);
+    }
+
+    .arch-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .arch-layer {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--green);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .arch-name {
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .arch-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rule);
+      font-size: 1.5rem;
+      padding-top: 2rem;
+    }
+
+    /* ── DIVIDER ── */
+    .ruled { border: none; border-top: 1px solid var(--rule); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4rem 3rem 2rem;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid #30363d;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-brand em { color: #3fb950; font-style: italic; }
+    .footer-tagline  { font-size: 0.8rem; color: #8b949e; margin-top: 0.4rem; }
+
+    .footer-links {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      color: #8b949e;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links a:hover { color: #3fb950; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #484f58;
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .commands-grid { grid-template-columns: 1fr; }
+      .install-steps { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: 1fr; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 5rem 1.5rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Finance<em>Tracker</em></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#commands">Commands</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER" target="_blank" class="nav-cta">GitHub →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div style="padding-top:60px;">
+    <div class="hero">
+      <div class="hero-left">
+        <div class="eyebrow">v2.0.0 · Python CLI · MIT License</div>
+        <h1 class="hero-title">
+          Your finances.<br>
+          <em>Owned by you.</em><br>
+          In your terminal.
+        </h1>
+        <p class="hero-subtitle">
+          A production-grade CLI for tracking income, expenses, and savings — powered by SQLAlchemy, Click, and Rich. No subscriptions. No cloud. Just your data.
+        </p>
+        <div class="hero-cta">
+          <a href="#install" class="btn btn-dark">Get Started →</a>
+          <a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER" class="btn btn-outline" target="_blank">View Source</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="float-label">Live Demo</div>
+        <div class="terminal-card">
+          <div class="tc-bar">
+            <div class="tc-dot tc-r"></div>
+            <div class="tc-dot tc-y"></div>
+            <div class="tc-dot tc-g"></div>
+            <span class="tc-title">finance-tracker — zsh</span>
+          </div>
+          <div class="tc-body">
+<span class="tc-prompt">$ </span><span class="tc-cmd">finance-tracker add -t income -a 3500 -c "Monthly Salary"</span>
+<span class="tc-green">  ✓  [INCOME] $3,500.00  ·  Monthly Salary</span>
+
+<span class="tc-prompt">$ </span><span class="tc-cmd">finance-tracker add -t expense -a 240 -c "Groceries" -d "Weekly shop"</span>
+<span class="tc-green">  ✓  [EXPENSE] $240.00  ·  Groceries  ·  Weekly shop</span>
+
+<span class="tc-prompt">$ </span><span class="tc-cmd">finance-tracker add -t savings -a 500 -c "Emergency Fund"</span>
+<span class="tc-green">  ✓  [SAVINGS] $500.00  ·  Emergency Fund</span>
+
+<span class="tc-prompt">$ </span><span class="tc-cmd">finance-tracker report --period month</span>
+<span class="tc-out">  ╔══════════════════════════════════════════════╗</span>
+<span class="tc-out">  ║  📊  Financial Summary  ·  Month            ║</span>
+<span class="tc-out">  ╠══════════════════════════════════════════════╣</span>
+<span class="tc-out">  ║  Total Income           </span><span class="tc-green">$3,500.00</span><span class="tc-out">          ║</span>
+<span class="tc-out">  ║  Total Expenses           </span><span class="tc-red">$240.00</span><span class="tc-out">          ║</span>
+<span class="tc-out">  ║  Total Savings            </span><span class="tc-cyan">$500.00</span><span class="tc-out">          ║</span>
+<span class="tc-out">  ║  Net Balance            </span><span class="tc-green">$3,260.00</span><span class="tc-out">          ║</span>
+<span class="tc-out">  ║  Savings Rate              </span><span class="tc-gold">14.3%</span><span class="tc-out">          ║</span>
+<span class="tc-out">  ╚══════════════════════════════════════════════╝</span>
+
+<span class="tc-prompt">$ </span><span class="tc-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">INCOME <span class="up">↑ $3,500</span></span>
+      <span class="ticker-item">EXPENSES <span class="down">↓ $240</span></span>
+      <span class="ticker-item">SAVINGS <span class="up">⊛ $500</span></span>
+      <span class="ticker-item">NET BALANCE <span class="up">$3,260</span></span>
+      <span class="ticker-item">SAVINGS RATE <span class="up">14.3%</span></span>
+      <span class="ticker-item">SQLite · SQLAlchemy · Click · Rich</span>
+      <span class="ticker-item">INCOME <span class="up">↑ $3,500</span></span>
+      <span class="ticker-item">EXPENSES <span class="down">↓ $240</span></span>
+      <span class="ticker-item">SAVINGS <span class="up">⊛ $500</span></span>
+      <span class="ticker-item">NET BALANCE <span class="up">$3,260</span></span>
+      <span class="ticker-item">SAVINGS RATE <span class="up">14.3%</span></span>
+      <span class="ticker-item">SQLite · SQLAlchemy · Click · Rich</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features" class="features-bg">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">01 — Features</div>
+        <h2 class="section-title">Everything you need.<br><em>Nothing you don't.</em></h2>
+        <p class="section-desc">Built on a clean, modular architecture — easy to extend, test, and trust.</p>
+      </div>
+
+      <div class="features-grid reveal">
+        <div class="feat-card">
+          <div class="feat-num">01</div>
+          <div class="feat-title">Rich Terminal UI</div>
+          <p class="feat-text">Colour-coded tables, summaries, and category breakdowns powered by the Rich library. Your data is beautiful by default.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-num">02</div>
+          <div class="feat-title">SQLAlchemy ORM</div>
+          <p class="feat-text">Rock-solid SQLite storage via SQLAlchemy 2.0. Full ACID transactions, safe session management, and zero data loss.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-num">03</div>
+          <div class="feat-title">Pydantic Validation</div>
+          <p class="feat-text">Every transaction is validated by a Pydantic v2 schema before touching the database. Bad data never gets in.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-num">04</div>
+          <div class="feat-title">Visual Reports</div>
+          <p class="feat-text">Generate a four-panel PNG report with summary bars, category donut, top spenders, and key metrics. One command.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-num">05</div>
+          <div class="feat-title">Budget Alerts</div>
+          <p class="feat-text">Set a spending limit for any category and instantly see how you're tracking — with a progress bar and over-budget warnings.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-num">06</div>
+          <div class="feat-title">CSV Export</div>
+          <p class="feat-text">Export your full transaction history to CSV in one command. Compatible with Excel, Google Sheets, and any analysis tool.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMANDS -->
+  <section id="commands">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">02 — Commands</div>
+        <h2 class="section-title">8 commands.<br><em>Complete control.</em></h2>
+        <p class="section-desc">Everything accessible from the terminal, with clear help text and sensible defaults.</p>
+      </div>
+
+      <div class="commands-grid reveal">
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker init</span>
+            <span class="cmd-tag tag-core">Core</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker init</span></div>
+          </div>
+          <div class="cmd-desc">Initialise the SQLite database. Safe to run multiple times.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker add</span>
+            <span class="cmd-tag tag-core">Core</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker add</span>
+  <span class="flag">--type</span>    <span class="val">income|expense|savings</span>
+  <span class="flag">--amount</span>  <span class="val">1500.00</span>
+  <span class="flag">--category</span> <span class="val">"Salary"</span>
+  <span class="flag">--description</span> <span class="val">"Optional note"</span></div>
+          </div>
+          <div class="cmd-desc">Record a new transaction with full validation.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker list</span>
+            <span class="cmd-tag tag-core">Core</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker list</span>
+  <span class="flag">--type</span>     <span class="val">expense</span>
+  <span class="flag">--category</span> <span class="val">"food"</span>
+  <span class="flag">--limit</span>    <span class="val">20</span></div>
+          </div>
+          <div class="cmd-desc">List all transactions with optional type/category filters.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker report</span>
+            <span class="cmd-tag tag-core">Core</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker report</span>
+  <span class="flag">--period</span>  <span class="val">today|week|month|year|all</span></div>
+          </div>
+          <div class="cmd-desc">Print a Rich summary table for any time window.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker breakdown</span>
+            <span class="cmd-tag tag-new">New</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker breakdown</span>
+  <span class="flag">--type</span>  <span class="val">expense</span></div>
+          </div>
+          <div class="cmd-desc">Show spending by category with inline bar chart.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker search</span>
+            <span class="cmd-tag tag-new">New</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker search</span> <span class="val">amazon</span></div>
+          </div>
+          <div class="cmd-desc">Full-text search across category and description fields.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker budget</span>
+            <span class="cmd-tag tag-new">New</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker budget</span>
+  <span class="val">Groceries</span> <span class="val">400</span>
+  <span class="flag">--period</span> <span class="val">month</span></div>
+          </div>
+          <div class="cmd-desc">Check a category budget with progress bar + over-budget alert.</div>
+        </div>
+
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-name">finance-tracker export</span>
+            <span class="cmd-tag tag-new">New</span>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-usage"><span class="gr">$ finance-tracker export</span>
+  <span class="flag">--output</span> <span class="val">my_data.csv</span></div>
+          </div>
+          <div class="cmd-desc">Export all transactions to a CSV file.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install" class="install-bg">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">03 — Installation</div>
+        <h2 class="section-title">Running in <em>under 60 seconds.</em></h2>
+        <p class="section-desc">Python 3.9+ required. No system dependencies beyond pip.</p>
+      </div>
+
+      <div class="install-steps reveal">
+        <div class="install-step">
+          <div class="step-head">
+            <div class="step-n">1</div>
+            <div class="step-title">Clone the repository</div>
+          </div>
+          <div class="step-code">git clone https://github.com/Ahmad-Akram7/FINANCE-TRACKER.git
+cd FINANCE-TRACKER</div>
+        </div>
+
+        <div class="install-step">
+          <div class="step-head">
+            <div class="step-n">2</div>
+            <div class="step-title">Create a virtual environment</div>
+          </div>
+          <div class="step-code"><span class="cm"># macOS / Linux</span>
+python3 -m venv venv
+source venv/bin/activate
+
+<span class="cm"># Windows</span>
+py -m venv venv
+venv\Scripts\activate</div>
+        </div>
+
+        <div class="install-step">
+          <div class="step-head">
+            <div class="step-n">3</div>
+            <div class="step-title">Install dependencies</div>
+          </div>
+          <div class="step-code">pip install -r requirements.txt
+pip install -e .
+
+<span class="cm"># Optional: matplotlib for visual reports</span>
+pip install matplotlib</div>
+        </div>
+
+        <div class="install-step">
+          <div class="step-head">
+            <div class="step-n">4</div>
+            <div class="step-title">Initialise and run</div>
+          </div>
+          <div class="step-code">finance-tracker init
+finance-tracker --help
+
+<span class="cm"># Add your first transaction</span>
+finance-tracker add -t income -a 3500 -c "Salary"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="arch">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">04 — Architecture</div>
+        <h2 class="section-title">Built to last.<br><em>Designed to extend.</em></h2>
+        <p class="section-desc">Clean separation of concerns — swap the CLI for a web API without touching the business logic.</p>
+      </div>
+
+      <div class="arch-grid reveal">
+        <div class="arch-card">
+          <div class="arch-icon">🗃️</div>
+          <div class="arch-layer">Layer 1</div>
+          <div class="arch-name">models/</div>
+          <p class="arch-desc">SQLAlchemy ORM models and Pydantic v2 schemas. All data shapes live here.</p>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">🔌</div>
+          <div class="arch-layer">Layer 2</div>
+          <div class="arch-name">database/</div>
+          <p class="arch-desc">Engine setup, session factory, and context manager. One place for all DB config.</p>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">⚙️</div>
+          <div class="arch-layer">Layer 3</div>
+          <div class="arch-name">core/</div>
+          <p class="arch-desc">Pure business logic — CRUD, summaries, search, breakdown. Zero UI coupling.</p>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">💻</div>
+          <div class="arch-layer">Layer 4</div>
+          <div class="arch-name">interfaces/</div>
+          <p class="arch-desc">Click CLI and Rich display helpers. Swap for FastAPI or Django with no core changes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Finance<em>Tracker</em></div>
+          <div class="footer-tagline">Personal finance management from your terminal.</div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER" target="_blank">GitHub</a>
+          <a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/issues" target="_blank">Issues</a>
+          <a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
+          <a href="https://github.com/Ahmad-Akram7" target="_blank">Ahmad Akram</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>MIT License · Finance Tracker v2.0.0</span>
+        <span>Built with Click · SQLAlchemy · Rich · Pydantic</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 3) * 0.08}s`;
+      io.observe(el);
+    });
+  </script>
+</body>
+</html>
