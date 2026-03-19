@@ -1,4 +1,4 @@
-<img src="docs/banner.svg" alt="Finance Tracker Banner" width="100%" />
+<img src="Docs/banner.svg" alt="Finance Tracker Banner" width="100%" />
 
 # 💰 Finance Tracker
 
@@ -26,7 +26,7 @@ Finance Tracker is a terminal-first personal finance manager. Track income, expe
 
 ---
 ## 📸 Preview
-<img src="docs/preview.svg" alt="CLI Preview" width="860" />
+<img src="Docs/preview.svg" alt="CLI Preview" width="860" />
 ## ✨ What's New in v2.0
 
 - **`breakdown` command** — Category-level spending breakdown with inline bar chart
