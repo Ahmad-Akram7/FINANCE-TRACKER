@@ -23,7 +23,7 @@ It should not be positioned as an encrypted vault, bank-grade financial system, 
 | Medium | The interface said “Selected period” without providing a period selector. | Label the displayed period accurately as the current month. |
 | Medium | Tabs lacked complete tab/tabpanel semantics and keyboard arrow navigation. | Add accessible relationships, selected state, focus management, and arrow/Home/End navigation. |
 | Medium | Focus visibility, small touch controls, narrow layouts, and dark-mode button contrast needed improvement. | Add responsive styling, visible focus rings, larger targets, and explicit dark-mode button colors. |
-| Medium | No PR validation workflow covered the static app. The old CLI tests also require pytest. | Add a dedicated pull-request workflow for JavaScript syntax, static references, and pytest. |
+| High | The Python CLI entry point and tests imported a `finance_tracker` package that did not exist in the repository; `find_packages()` therefore had no installable application package. | Add the installable package structure and preserve root-level compatibility shims. |\n| Medium | No PR validation workflow covered the static app. The old CLI tests also require pytest and runtime dependencies. | Add a dedicated pull-request workflow for JavaScript syntax, static references, and the CLI pytest suite with its dependencies. |
 
 ## Remaining limitations and release gates
 
