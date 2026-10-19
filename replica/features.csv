@@ -1,0 +1,15 @@
+feature,area,priority,original,clone,notes
+Monthly income/expense/net overview,Dashboard,must,yes,yes,Current calendar month
+Savings-rate calculation,Dashboard,must,yes,yes,Surplus divided by income
+Manual income/expense/savings entry,Transactions,must,yes,yes,Validated positive amount
+Transaction search and type filter,Transactions,must,yes,yes,Search category and description
+Delete with confirmation,Transactions,must,yes,yes,IndexedDB transaction
+Category spend breakdown,Reports,should,yes,yes,Current month bar chart
+Monthly category budgets,Budgeting,must,yes,yes,Local browser storage
+Savings goals,Goals,should,yes,yes,Target and progress
+CSV export,Backup,must,yes,yes,Transactions only
+JSON backup and restore,Backup,must,yes,yes,Transactions budgets goals
+Bank account synchronization,Connectivity,could,yes,skip,Requires provider and credential/security review
+Recurring transaction detection,Automation,could,yes,skip,Not implemented in local-only first slice
+Multi-device sync,Sync,could,yes,skip,Requires server or sync protocol
+Encryption at rest,Security,must,yes,partial,Browser storage is not encrypted at rest
