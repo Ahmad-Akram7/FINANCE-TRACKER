@@ -21,3 +21,20 @@ html[data-theme="dark"] .file-action{color:#101614}
 
 /* Per-person custom split allocations */
 .split-allocations{display:grid;gap:9px;margin-top:9px}.split-allocation-row{display:grid;grid-template-columns:minmax(90px,.75fr) minmax(110px,1fr) minmax(150px,1.3fr);gap:10px;align-items:end;border:1px solid var(--line);border-radius:11px;padding:11px;background:var(--bg)}.split-allocation-row>strong{padding-bottom:10px;overflow-wrap:anywhere}.split-allocation-row label{min-width:0}.split-allocation-row input,.split-allocation-row select{min-width:0}.split-preview{white-space:normal;overflow-wrap:anywhere}@media(max-width:600px){.split-allocation-row{grid-template-columns:1fr 1fr}.split-allocation-row>strong{grid-column:1/-1;padding-bottom:0}.split-allocation-row label:last-child{grid-column:1/-1}}
+
+
+/* Usability and accessibility hardening */
+:root{--focus:#0b72d9}
+button,input,select,.file-action{min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible,.file-action:focus-within,.tabs [role="tab"]:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button:hover:not(:disabled){filter:brightness(.96)}
+button:active:not(:disabled){transform:translateY(1px)}
+.tabs{border-bottom:1px solid var(--line);padding-bottom:8px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}
+.tabs button{flex:0 0 auto;white-space:nowrap}
+.tabcontent:focus{outline:none}
+.error-banner{margin:0 0 16px;padding:14px 16px;border:1px solid #c75b54;border-left-width:5px;border-radius:12px;background:#fff0ee;color:#782b27;font-size:14px;overflow-wrap:anywhere}
+html[data-theme="dark"] .error-banner{background:#3a2423;color:#ffd8d4;border-color:#ff8585}
+input::placeholder{color:#7a8980;opacity:1}
+html[data-theme="dark"] input::placeholder{color:#9eafa5}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(max-width:600px){.wrap{margin:18px auto;padding:0 12px}.toolbar{align-items:stretch}.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.actions>*{min-width:0}.actions button,.actions .file-action{width:100%;justify-content:center}.header-actions{width:100%;justify-content:space-between}.cards .card{padding:12px}.value{font-size:22px}.form-actions{flex-wrap:wrap}.form-actions button{width:100%}th,td{padding:10px 7px}}
