@@ -42,3 +42,9 @@ It should not yet be marketed as a secure financial-data vault or a multi-device
 - Navigate tabs with mouse, Tab, arrow keys, Home, and End; verify focus is visible.
 - Test narrow mobile widths and 200% browser zoom.
 - Verify the dark-mode toggle still works and persists where localStorage is available.
+
+## Semantic contrast spot-check
+
+The light-theme semantic text pairs were checked using the WCAG relative-luminance formula. Normal text pairs pass 4.5:1: foreground on background (14.74:1), surface (15.91:1), and muted surface (13.76:1); muted foreground on background (5.84:1), surface (6.31:1), and muted surface (5.46:1); primary on background (5.99:1); white primary text on primary (6.47:1); and secondary foreground on secondary (10.73:1). The original light border token failed the 3:1 non-text contrast spot-check, so it was darkened to `#75877A` (3.82:1 against white, 3.54:1 against the page background, 3.30:1 against muted surface). The dark border token was adjusted to `#617268` (3.19:1 against the card surface, 3.48:1 against input surfaces, 3.59:1 against the page background).
+
+This is a semantic color-pair spot-check, not a complete WCAG conformance audit. Focus visibility, keyboard behavior, responsive layout, screen-reader output, and actual browser rendering still require manual testing.
