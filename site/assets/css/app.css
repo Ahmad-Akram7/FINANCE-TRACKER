@@ -25,7 +25,7 @@ html[data-theme="dark"] .file-action{color:#101614}
 
 /* Usability and accessibility hardening */
 :root{--focus:#0b72d9}
-button,input,select,.file-action{min-height:42px}
+button,input:not([type="checkbox"]):not([type="radio"]),select,.file-action{min-height:42px}
 button:focus-visible,input:focus-visible,select:focus-visible,.file-action:focus-within,.tabs [role="tab"]:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 button:hover:not(:disabled){filter:brightness(.96)}
 button:active:not(:disabled){transform:translateY(1px)}
