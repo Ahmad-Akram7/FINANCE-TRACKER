@@ -8,9 +8,11 @@ It should be described as a **personal tracking tool**, not a bank-grade financi
 
 ## Issues addressed in this branch
 
-- **Dashboard render could fail on malformed budget/goal JSON.** Reads now validate stored values as arrays; the dashboard can still render while displaying a warning, and budget/goal edits and backup export stop instead of overwriting unreadable data.
+- **Dashboard render could fail on malformed local settings.** Budget, goal, khata, and people lists now validate both their array shape and basic record structure. The dashboard can still render while displaying a warning, and relevant edits/backup export stop instead of overwriting unreadable data. Category aggregation uses prototype-safe objects.
 - **Backup export could silently produce an incomplete or fail with an unhandled JSON parse error.** Export now validates budget and goal settings and presents a clear failure message if either list cannot be read.
 - **Expense summary had a misleading “Selected period” label despite no period selector.** It now says “Current month,” matching the actual calculation.
+- **Savings rate could imply a valid 0% when income was zero.** It now shows an em dash until there is income to use as the denominator.
+- **Legacy/imported savings goals without a saved amount could produce `NaN` progress.** Progress rendering now normalizes the missing amount to zero.
 - **Dark-mode primary button contrast was weak.** Standard primary actions now use dark text on the light-green dark-mode primary surface; special tabs, person selectors, secondary buttons, and destructive buttons keep their semantic styling.
 - **Visual hierarchy was inconsistent.** Added a restrained responsive visual system, clearer heading hierarchy, softer panel surfaces, stronger focus states, and responsive refinements without adding dependencies.
 - **Privacy/backup documentation was incomplete.** README now documents local storage boundaries and the actual JSON backup contents, including khata data and currency preference.
