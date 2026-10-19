@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local finance data and exports
+*.db
+*.sqlite
+*.sqlite3
+transactions*.csv
+ledger-backup*.json
+monthly_report.png
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
