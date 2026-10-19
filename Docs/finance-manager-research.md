@@ -4,7 +4,7 @@ Reviewed: 2026-10-19
 
 ## Decision
 
-Build a local-first, manual-entry finance tracker inspired by established product patterns, rather than copying a proprietary app. The target is a useful, private personal money workflow that works without bank connections or paid services. The repository already contains a Python CLI; the new `app.html` is a standalone browser interface and does not replace that CLI.
+Build a local-first, manual-entry finance tracker inspired by established product patterns, rather than copying a proprietary app. The target is a useful, private personal money workflow that works without bank connections or paid services. The repository already contains a Python CLI; the new static browser app in `site/` is a standalone browser interface and does not replace that CLI.
 
 ## Products reviewed
 
@@ -33,7 +33,7 @@ Not included: bank aggregation, automatic subscription detection, multi-device s
 
 ## Implementation notes
 
-This is a clean-room implementation of common finance workflows. It does not use another product's source, assets, or copied interface text. Existing Python CLI files are retained. The current repository's `index.html` is a marketing/landing page, so the functional browser tool is in `app.html`.
+This is a clean-room implementation of common finance workflows. It does not use another product's source, assets, or copied interface text. Existing Python CLI files are retained. The deployable browser app lives in `site/`; its CSS and JavaScript are separate files under `site/assets/`.
 
 ## Validation checklist
 

@@ -1,36 +1,48 @@
 # Finance Tracker
 
-A private, local-first personal finance toolkit. It includes a browser-based tracker for everyday use and a Python command-line interface for terminal workflows.
+A local-first personal finance tracker plus a Python CLI. The browser app is a static site and can be hosted on GitHub Pages or Cloudflare Pages without a server, build step, paid API, or account.
 
-## Browser tracker
+## Browser app
 
-Open [app.html](app.html) in a current browser. No build step, account, server, bank connection, or third-party JavaScript dependency is required.
+- **Live locally:** open [site/index.html](site/index.html) in a modern browser.
+- **GitHub Pages:** the included Actions workflow deploys the `site/` directory on pushes to `main`. In repository Settings → Pages, select **GitHub Actions** as the build/deployment source.
+- **Cloudflare Pages:** create a Pages project connected to this repository. Set the build command to none (leave it blank) and the build output directory to `site`. No environment variables are required.
 
-Features:
-- Record income, expenses and savings transfers.
-- Review current-month income, expenses, net cash flow and savings rate.
-- Search and filter transactions; delete with confirmation.
-- See expense totals by category and track monthly category budgets.
-- Set savings goals and track progress.
-- Export transactions as CSV and export/restore a JSON backup.
+Features: income/expense/savings transactions, monthly cash-flow summary, category spending, budgets, savings goals, search/filter, CSV export and JSON backup/restore.
 
-Transactions use IndexedDB. Budgets and goals use browser local storage. The data remains in that browser profile; it does not sync to another device. Browser storage can be cleared or lost, so export backups regularly. This is not an encrypted password vault and should not hold bank credentials or full account numbers.
+## Project layout
 
-The currency defaults to PKR. Display formatting follows the browser's locale; this is a display setting, not currency conversion.
+```text
+.
+├── site/                    # Deployable static web app
+│   ├── index.html
+│   ├── assets/
+│   │   ├── css/app.css
+│   │   └── js/app.js
+│   └── _headers             # Cloudflare Pages response headers
+├── .github/workflows/
+│   └── pages.yml            # GitHub Pages deployment
+├── Docs/                    # Research and implementation notes
+├── cli.py, core.py, ...     # Existing Python CLI
+├── tests (test_core.py)     # CLI tests
+└── setup.py
+```
+
+## Privacy and storage
+
+The browser app stores transactions in IndexedDB and budgets/goals in localStorage in the current browser profile. It does not sync across devices or connect to banks. Browser storage is **not encrypted at rest**; do not enter bank credentials or full account numbers. Export backups regularly. CSV export contains transactions; JSON backup includes transactions, budgets and goals.
+
+The currency display defaults to PKR; this formats values but does not convert currencies.
 
 ## Python CLI
 
-The existing Python CLI is retained. See [FINANCE_README.md](FINANCE_README.md) for its commands and setup. It uses a local SQLite database by default.
+See [FINANCE_README.md](FINANCE_README.md) for installation and terminal commands. The CLI uses a local SQLite database by default and remains independent of the browser app.
 
-## Research and design
+## Documentation
 
-The product comparison, scope decisions and validation checklist are in [Docs/finance-manager-research.md](Docs/finance-manager-research.md). The replica flow map and feature matrix are in [replica/](replica/).
-
-## Quick start
-
-For the browser app, open app.html.
-
-For the CLI, create a virtual environment, install the project dependencies, then run the installed finance-tracker command. Follow the current CLI documentation for the exact installation path.
+- [Finance manager research](Docs/finance-manager-research.md)
+- [Replication map](Docs/replica-map.md)
+- [Feature matrix](Docs/feature-matrix.csv)
 
 ## License
 

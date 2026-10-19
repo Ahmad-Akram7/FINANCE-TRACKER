@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101c19">
+<meta name="description" content="A private, local-first personal finance tracker for income, expenses, budgets and savings goals.">
+<title>Ledger — Personal Finance</title>
+<link rel="stylesheet" href="./assets/css/app.css">
+</head>
+<body>
+<header><div><strong>Ledger<span style="color:#8fceae">.</span></strong><div class="small" style="color:#b6c8bf">Personal finance, kept on this device</div></div><span id="storageStatus">Checking local storage…</span></header>
+<main class="wrap">
+<div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
+<section class="cards" aria-label="Financial overview">
+<div class="card"><div class="metric">Income</div><div class="value positive" id="incomeTotal">Rs 0</div><div class="small">Selected period</div></div>
+<div class="card"><div class="metric">Expenses</div><div class="value negative" id="expenseTotal">Rs 0</div><div class="small">Selected period</div></div>
+<div class="card"><div class="metric">Net cash flow</div><div class="value" id="netTotal">Rs 0</div><div class="small">Income minus expenses</div></div>
+<div class="card"><div class="metric">Savings rate</div><div class="value" id="savingsRate">0%</div><div class="small">Surplus divided by income</div></div>
+</section>
+<div class="tabs" role="tablist"><button class="active" data-tab="overview">Overview</button><button data-tab="transactions">Transactions</button><button data-tab="budgets">Budgets</button><button data-tab="goals">Savings goals</button></div>
+<section id="overview" class="tabcontent">
+<div class="layout"><div class="panel"><h2>Recent transactions</h2><div id="recentList" class="tablewrap"></div></div><div class="stack"><div class="panel"><h2>Spending by category</h2><div id="categoryChart"></div></div><div class="panel"><h2>Quick add</h2><form id="txForm" class="formgrid">
+<label>Type<select name="type"><option value="expense">Expense</option><option value="income">Income</option><option value="savings">Savings transfer</option></select></label>
+<label>Amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
+<label>Category<input name="category" required maxlength="60" placeholder="Groceries"></label>
+<label>Date<input name="date" type="date" required></label>
+<label class="full">Description (optional)<input name="description" maxlength="180" placeholder="What was this for?"></label>
+<div class="form-actions"><button type="submit">Add transaction</button><span id="formMessage" class="small" role="status"></span></div>
+</form></div></div></div>
+</section>
+<section id="transactions" class="tabcontent hidden"><div class="panel"><div class="row" style="flex-wrap:wrap;margin-bottom:12px"><h2 style="margin:0">All transactions</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="search" placeholder="Search category or note" style="width:220px"><select id="typeFilter" style="width:auto"><option value="">All types</option><option value="income">Income</option><option value="expense">Expenses</option><option value="savings">Savings</option></select></div></div><div id="allList" class="tablewrap"></div></div></section>
+<section id="budgets" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Set a monthly spending limit</h2><form id="budgetForm" class="formgrid"><label>Category<input name="category" maxlength="60" required placeholder="Dining"></label><label>Monthly limit<input name="limit" type="number" min="0.01" step="0.01" required></label><div class="form-actions"><button>Save budget</button></div></form><p class="small">Budgets compare spending in the current calendar month.</p></div><div class="panel"><h2>Your budgets</h2><div id="budgetList"></div></div></div></section>
+<section id="goals" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Create a savings goal</h2><form id="goalForm" class="formgrid"><label>Goal name<input name="name" maxlength="70" required placeholder="Emergency fund"></label><label>Target amount<input name="target" type="number" min="0.01" step="0.01" required></label><label>Saved so far<input name="saved" type="number" min="0" step="0.01" value="0" required></label><label>Target date (optional)<input name="date" type="date"></label><div class="form-actions"><button>Create goal</button></div></form></div><div class="panel"><h2>Progress</h2><div id="goalList"></div></div></div></section>
+<div class="footer">Records are stored in this browser's IndexedDB. Export backups regularly; clearing browser data can erase this device's copy. This is a tracking tool, not financial advice.</div>
+</main>
+<script src="./assets/js/app.js" defer></script>
+</body></html>

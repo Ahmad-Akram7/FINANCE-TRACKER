@@ -2,7 +2,7 @@
 
 The Python command-line interface records income, expenses and savings in a local SQLite database. Use it when you prefer terminal workflows, scripted exports or reports.
 
-For a browser interface with budgets, savings goals and local CSV/JSON backup, open [app.html](app.html). The browser app and CLI keep separate data stores; they do not sync.
+For a browser interface with budgets, savings goals and local CSV/JSON backup, open [browser app](site/index.html). The browser app and CLI keep separate data stores; they do not sync.
 
 ## Install
 
@@ -85,7 +85,7 @@ The project includes tests for transaction validation, CRUD operations, summarie
 
 ## Project notes
 
-The product research and scope decisions are documented in [Docs/finance-manager-research.md](Docs/finance-manager-research.md). The browser screen map and feature checklist live in [replica/](replica/).
+The product research and scope decisions are documented in [Docs/finance-manager-research.md](Docs/finance-manager-research.md). The browser screen map and feature checklist live in [replication map](Docs/replica-map.md) and [feature matrix](Docs/feature-matrix.csv).
 
 ## License
 
