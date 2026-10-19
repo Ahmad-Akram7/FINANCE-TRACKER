@@ -1,0 +1,50 @@
+name: Browser app and CLI checks
+
+on:
+  pull_request:
+    paths:
+      - "site/**"
+      - "*.py"
+      - "finance_tracker/**"
+      - ".github/workflows/browser-checks.yml"
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "*.py"
+      - "finance_tracker/**"
+      - ".github/workflows/browser-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate browser JavaScript syntax
+        run: node --check site/assets/js/app.js
+      - name: Check browser app references
+        run: |
+          test -s site/index.html
+          test -s site/assets/css/app.css
+          test -s site/assets/js/app.js
+          grep -q 'id="storageStatus"' site/index.html
+          grep -q 'role="tablist"' site/index.html
+          grep -q 'validDate=' site/assets/js/app.js
+          grep -q 'function putMany' site/assets/js/app.js
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package and test dependencies
+        run: python -m pip install -e . pytest
+      - name: Run CLI unit tests
+        run: python -m pytest -q

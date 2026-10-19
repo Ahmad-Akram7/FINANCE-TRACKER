@@ -13,10 +13,10 @@
 <main class="wrap">
 <div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><label class="file-action"><span>Import CSV</span><input id="importCsv" type="file" accept=".csv,text/csv" aria-label="Import transactions from CSV"></label><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
 <section class="cards" aria-label="Financial overview">
-<div class="card"><div class="metric">Income</div><div class="value positive" id="incomeTotal">Rs 0</div><div class="small">Selected period</div></div>
+<div class="card"><div class="metric">Income</div><div class="value positive" id="incomeTotal">Rs 0</div><div class="small">Current month</div></div>
 <div class="card"><div class="metric">Expenses</div><div class="value negative" id="expenseTotal">Rs 0</div><div class="small">Selected period</div></div>
-<div class="card"><div class="metric">Net cash flow</div><div class="value" id="netTotal">Rs 0</div><div class="small">Income minus expenses</div></div>
-<div class="card"><div class="metric">Savings rate</div><div class="value" id="savingsRate">0%</div><div class="small">Surplus divided by income</div></div>
+<div class="card"><div class="metric">Net cash flow</div><div class="value" id="netTotal">Rs 0</div><div class="small">Income minus expenses and savings transfers</div></div>
+<div class="card"><div class="metric">Savings rate</div><div class="value" id="savingsRate">0%</div><div class="small">Savings transfers divided by income</div></div>
 </section>
 <section class="insight-grid" aria-label="Financial insights">
 <div class="panel trend-panel"><div class="panel-heading"><div><h2>Cash flow trend</h2><p class="small">Income vs expenses across the last six months</p></div><span class="chart-tag">6 months</span></div><div id="cashflowChart" class="cashflow-chart"><div class="empty">Your monthly trend will appear here.</div></div></div>
