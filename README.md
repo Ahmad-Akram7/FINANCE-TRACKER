@@ -30,7 +30,7 @@ Features: income/expense/savings transactions, monthly cash-flow summary, catego
 
 ## Privacy and storage
 
-The browser app stores transactions in IndexedDB and budgets/goals in localStorage in the current browser profile. It does not sync across devices or connect to banks. Browser storage is **not encrypted at rest**; do not enter bank credentials or full account numbers. Export backups regularly. CSV export contains transactions; JSON backup includes transactions, budgets and goals.
+The browser app stores transactions in IndexedDB and budgets, goals, khata entries, people, and preferences in localStorage in the current browser profile. It does not sync across devices or connect to banks. Browser storage is **not encrypted at rest**; do not enter bank credentials or full account numbers. Export JSON backups regularly and keep them somewhere safe. CSV export contains transactions; JSON backup includes transactions, budgets, goals, khata entries, people, and currency preference. Restore merges transactions by ID and replaces any included settings/khata lists after confirmation. Currency formatting does not convert currencies.
 
 The currency display defaults to PKR; this formats values but does not convert currencies.
 
