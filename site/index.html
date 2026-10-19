@@ -51,12 +51,13 @@
 <label class="full">Note (optional)<input name="note" maxlength="180" placeholder="What was this for?"></label>
 <div class="form-actions"><button type="submit">Add to khata</button><span class="small" id="iouMessage" role="status"></span></div>
 </form><p class="small">Positive balance means they owe you; negative means you owe them. Repayments reduce the open entry.</p></div>
-<div class="panel"><h2>Split an amount</h2><p class="small">Choose 2–3 people, enter the total, and Ledger divides it evenly (including any leftover paisas). Each share becomes a separate khata entry.</p>
-<form id="splitForm" class="formgrid"><label>Direction<select name="direction"><option value="owed-to-me">They owe me (+)</option><option value="i-owe">I owe them (−)</option></select></label>
+<div class="panel"><h2>Split an amount</h2><p class="small">Choose 2–3 people. Ledger starts with an even split, but you can edit each person's share and choose separately whether they owe you or you owe them.</p>
+<form id="splitForm" class="formgrid">
 <label>Total amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="e.g. 3000"></label>
 <label class="full">Reason / note (optional)<input name="note" maxlength="180" placeholder="Dinner, fuel, shared purchase…"></label>
 <div class="full"><div class="row"><strong>Select 2 or 3 people</strong><span id="splitCount" class="small">0 selected</span></div><div id="splitPeople" class="split-people"></div></div>
-<div class="form-actions"><button type="submit">Split and add to khata</button><span id="splitMessage" class="small" role="status"></span></div></form><div id="splitPreview" class="small split-preview" aria-live="polite"></div></div>
+<div class="full"><strong>Each person's khata entry</strong><div id="splitAllocations" class="split-allocations"><p class="small">Select 2 or 3 people to set their shares.</p></div></div>
+<div class="form-actions"><button type="submit">Add shares to khata</button><span id="splitMessage" class="small" role="status"></span></div></form><div id="splitPreview" class="small split-preview" aria-live="polite"></div></div>
 <div class="panel"><h2>Balances</h2><div class="iou-summary"><div><span class="small">Owed to you</span><strong id="owedToMeTotal">Rs 0</strong></div><div><span class="small">You owe</span><strong id="iOweTotal">Rs 0</strong></div></div><div id="selectedPersonSummary" class="selected-person-summary"></div><div id="iouList"></div></div>
 </div></div>
 </section>
