@@ -18,6 +18,10 @@
 <div class="card"><div class="metric">Net cash flow</div><div class="value" id="netTotal">Rs 0</div><div class="small">Income minus expenses</div></div>
 <div class="card"><div class="metric">Savings rate</div><div class="value" id="savingsRate">0%</div><div class="small">Surplus divided by income</div></div>
 </section>
+<section class="insight-grid" aria-label="Financial insights">
+<div class="panel trend-panel"><div class="panel-heading"><div><h2>Cash flow trend</h2><p class="small">Income vs expenses across the last six months</p></div><span class="chart-tag">6 months</span></div><div id="cashflowChart" class="cashflow-chart"><div class="empty">Your monthly trend will appear here.</div></div></div>
+<div class="panel insight-panel"><h2>Monthly insight</h2><div id="monthlyInsight"><div class="empty">Add transactions to see your summary.</div></div><div class="insight-foot">Based on records saved in this browser</div></div>
+</section>
 <div class="tabs" role="tablist"><button class="active" data-tab="overview">Overview</button><button data-tab="transactions">Transactions</button><button data-tab="budgets">Budgets</button><button data-tab="goals">Savings goals</button></div>
 <section id="overview" class="tabcontent">
 <div class="layout"><div class="panel"><h2>Recent transactions</h2><div id="recentList" class="tablewrap"></div></div><div class="stack"><div class="panel"><h2>Spending by category</h2><div id="categoryChart"></div></div><div class="panel"><h2>Quick add</h2><form id="txForm" class="formgrid">
