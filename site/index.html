@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101c19">
+<meta name="color-scheme" content="light dark">
 <meta name="description" content="A private, local-first personal finance tracker for income, expenses, budgets and savings goals.">
 <title>Ledger — Personal Finance</title>
 <link rel="stylesheet" href="./assets/css/app.css">
@@ -14,7 +15,7 @@
 <div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><label class="file-action"><span>Import CSV</span><input id="importCsv" type="file" accept=".csv,text/csv" aria-label="Import transactions from CSV"></label><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
 <section class="cards" aria-label="Financial overview">
 <div class="card"><div class="metric">Income</div><div class="value positive" id="incomeTotal">Rs 0</div><div class="small">Current month</div></div>
-<div class="card"><div class="metric">Expenses</div><div class="value negative" id="expenseTotal">Rs 0</div><div class="small">Selected period</div></div>
+<div class="card"><div class="metric">Expenses</div><div class="value negative" id="expenseTotal">Rs 0</div><div class="small">Current month</div></div>
 <div class="card"><div class="metric">Net cash flow</div><div class="value" id="netTotal">Rs 0</div><div class="small">Income minus expenses and savings transfers</div></div>
 <div class="card"><div class="metric">Savings rate</div><div class="value" id="savingsRate">0%</div><div class="small">Savings transfers divided by income</div></div>
 </section>
