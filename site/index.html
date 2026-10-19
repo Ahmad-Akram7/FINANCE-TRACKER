@@ -11,7 +11,7 @@
 <body>
 <header><div><strong>Ledger<span style="color:#8fceae">.</span></strong><div class="small" style="color:#b6c8bf">Personal finance, kept on this device</div></div><div class="header-actions"><span id="storageStatus">Checking local storage…</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">Dark mode</button></div></header>
 <main class="wrap">
-<div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
+<div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><label class="file-action"><span>Import CSV</span><input id="importCsv" type="file" accept=".csv,text/csv" aria-label="Import transactions from CSV"></label><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
 <section class="cards" aria-label="Financial overview">
 <div class="card"><div class="metric">Income</div><div class="value positive" id="incomeTotal">Rs 0</div><div class="small">Selected period</div></div>
 <div class="card"><div class="metric">Expenses</div><div class="value negative" id="expenseTotal">Rs 0</div><div class="small">Selected period</div></div>
@@ -22,7 +22,7 @@
 <div class="panel trend-panel"><div class="panel-heading"><div><h2>Cash flow trend</h2><p class="small">Income vs expenses across the last six months</p></div><span class="chart-tag">6 months</span></div><div id="cashflowChart" class="cashflow-chart"><div class="empty">Your monthly trend will appear here.</div></div></div>
 <div class="panel insight-panel"><h2>Monthly insight</h2><div id="monthlyInsight"><div class="empty">Add transactions to see your summary.</div></div><div class="insight-foot">Based on records saved in this browser</div></div>
 </section>
-<div class="tabs" role="tablist"><button class="active" data-tab="overview">Overview</button><button data-tab="transactions">Transactions</button><button data-tab="budgets">Budgets</button><button data-tab="goals">Savings goals</button></div>
+<div class="tabs" role="tablist"><button class="active" data-tab="overview">Overview</button><button data-tab="transactions">Transactions</button><button data-tab="budgets">Budgets</button><button data-tab="goals">Savings goals</button><button data-tab="debts">Money owed</button></div>
 <section id="overview" class="tabcontent">
 <div class="layout"><div class="panel"><h2>Recent transactions</h2><div id="recentList" class="tablewrap"></div></div><div class="stack"><div class="panel"><h2>Spending by category</h2><div id="categoryChart"></div></div><div class="panel"><h2>Quick add</h2><form id="txForm" class="formgrid">
 <label>Type<select name="type"><option value="expense">Expense</option><option value="income">Income</option><option value="savings">Savings transfer</option></select></label>
@@ -36,6 +36,18 @@
 <section id="transactions" class="tabcontent hidden"><div class="panel"><div class="row" style="flex-wrap:wrap;margin-bottom:12px"><h2 style="margin:0">All transactions</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="search" placeholder="Search category or note" style="width:220px"><select id="typeFilter" style="width:auto"><option value="">All types</option><option value="income">Income</option><option value="expense">Expenses</option><option value="savings">Savings</option></select></div></div><div id="allList" class="tablewrap"></div></div></section>
 <section id="budgets" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Set a monthly spending limit</h2><form id="budgetForm" class="formgrid"><label>Category<input name="category" maxlength="60" required placeholder="Dining"></label><label>Monthly limit<input name="limit" type="number" min="0.01" step="0.01" required></label><div class="form-actions"><button>Save budget</button></div></form><p class="small">Budgets compare spending in the current calendar month.</p></div><div class="panel"><h2>Your budgets</h2><div id="budgetList"></div></div></div></section>
 <section id="goals" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Create a savings goal</h2><form id="goalForm" class="formgrid"><label>Goal name<input name="name" maxlength="70" required placeholder="Emergency fund"></label><label>Target amount<input name="target" type="number" min="0.01" step="0.01" required></label><label>Saved so far<input name="saved" type="number" min="0" step="0.01" value="0" required></label><label>Target date (optional)<input name="date" type="date"></label><div class="form-actions"><button>Create goal</button></div></form></div><div class="panel"><h2>Progress</h2><div id="goalList"></div></div></div></section>
+<section id="debts" class="tabcontent hidden">
+<div class="layout"><div class="panel"><h2>Track money owed</h2><form id="iouForm" class="formgrid">
+<label>Direction<select name="direction"><option value="owed-to-me">Someone owes me</option><option value="i-owe">I owe someone</option></select></label>
+<label>Person<input name="person" required maxlength="100" placeholder="Name or contact"></label>
+<label>Original amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
+<label>Date recorded<input name="date" type="date" required></label>
+<label>Due date (optional)<input name="dueDate" type="date"></label>
+<label class="full">Note (optional)<input name="note" maxlength="180" placeholder="Reason, reference, or context"></label>
+<div class="form-actions"><button type="submit">Add record</button><span class="small" id="iouMessage" role="status"></span></div>
+</form><p class="small">Track personal IOUs and repayments. These records stay in this browser and are not sent to anyone.</p></div>
+<div class="panel"><h2>Outstanding balances</h2><div class="iou-summary"><div><span class="small">Owed to you</span><strong id="owedToMeTotal">Rs 0</strong></div><div><span class="small">You owe</span><strong id="iOweTotal">Rs 0</strong></div></div><div id="iouList"></div></div></div>
+</section>
 <div class="footer">Records are stored in this browser's IndexedDB. Export backups regularly; clearing browser data can erase this device's copy. This is a tracking tool, not financial advice.</div>
 </main>
 <script src="./assets/js/app.js" defer></script>
