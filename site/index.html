@@ -37,16 +37,28 @@
 <section id="budgets" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Set a monthly spending limit</h2><form id="budgetForm" class="formgrid"><label>Category<input name="category" maxlength="60" required placeholder="Dining"></label><label>Monthly limit<input name="limit" type="number" min="0.01" step="0.01" required></label><div class="form-actions"><button>Save budget</button></div></form><p class="small">Budgets compare spending in the current calendar month.</p></div><div class="panel"><h2>Your budgets</h2><div id="budgetList"></div></div></div></section>
 <section id="goals" class="tabcontent hidden"><div class="layout"><div class="panel"><h2>Create a savings goal</h2><form id="goalForm" class="formgrid"><label>Goal name<input name="name" maxlength="70" required placeholder="Emergency fund"></label><label>Target amount<input name="target" type="number" min="0.01" step="0.01" required></label><label>Saved so far<input name="saved" type="number" min="0" step="0.01" value="0" required></label><label>Target date (optional)<input name="date" type="date"></label><div class="form-actions"><button>Create goal</button></div></form></div><div class="panel"><h2>Progress</h2><div id="goalList"></div></div></div></section>
 <section id="debts" class="tabcontent hidden">
-<div class="layout"><div class="panel"><h2>Track money owed</h2><form id="iouForm" class="formgrid">
-<label>Direction<select name="direction"><option value="owed-to-me">Someone owes me</option><option value="i-owe">I owe someone</option></select></label>
-<label>Person<input name="person" required maxlength="100" placeholder="Name or contact"></label>
-<label>Original amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
+<div class="khata-layout">
+<aside class="panel people-sidebar"><div class="people-heading"><div><h2>People & khata</h2><p class="small">Select someone to see their running balance.</p></div></div>
+<form id="personForm" class="person-add"><label for="personName">Add person</label><div class="person-add-row"><input id="personName" maxlength="100" required placeholder="Name or contact"><button type="submit" aria-label="Add person">Add</button></div><span id="personMessage" class="small" role="status"></span></form>
+<div id="peopleList" class="people-list"></div></aside>
+<div class="khata-main">
+<div class="panel"><h2>Record a khata entry</h2><form id="iouForm" class="formgrid">
+<label>Direction<select name="direction"><option value="owed-to-me">They owe me (+)</option><option value="i-owe">I owe them (−)</option></select></label>
+<label>Person<input name="person" list="peopleOptions" required maxlength="100" placeholder="Name or contact"><datalist id="peopleOptions"></datalist></label>
+<label>Amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
 <label>Date recorded<input name="date" type="date" required></label>
 <label>Due date (optional)<input name="dueDate" type="date"></label>
-<label class="full">Note (optional)<input name="note" maxlength="180" placeholder="Reason, reference, or context"></label>
-<div class="form-actions"><button type="submit">Add record</button><span class="small" id="iouMessage" role="status"></span></div>
-</form><p class="small">Track personal IOUs and repayments. These records stay in this browser and are not sent to anyone.</p></div>
-<div class="panel"><h2>Outstanding balances</h2><div class="iou-summary"><div><span class="small">Owed to you</span><strong id="owedToMeTotal">Rs 0</strong></div><div><span class="small">You owe</span><strong id="iOweTotal">Rs 0</strong></div></div><div id="iouList"></div></div></div>
+<label class="full">Note (optional)<input name="note" maxlength="180" placeholder="What was this for?"></label>
+<div class="form-actions"><button type="submit">Add to khata</button><span class="small" id="iouMessage" role="status"></span></div>
+</form><p class="small">Positive balance means they owe you; negative means you owe them. Repayments reduce the open entry.</p></div>
+<div class="panel"><h2>Split an amount</h2><p class="small">Choose 2–3 people, enter the total, and Ledger divides it evenly (including any leftover paisas). Each share becomes a separate khata entry.</p>
+<form id="splitForm" class="formgrid"><label>Direction<select name="direction"><option value="owed-to-me">They owe me (+)</option><option value="i-owe">I owe them (−)</option></select></label>
+<label>Total amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="e.g. 3000"></label>
+<label class="full">Reason / note (optional)<input name="note" maxlength="180" placeholder="Dinner, fuel, shared purchase…"></label>
+<div class="full"><div class="row"><strong>Select 2 or 3 people</strong><span id="splitCount" class="small">0 selected</span></div><div id="splitPeople" class="split-people"></div></div>
+<div class="form-actions"><button type="submit">Split and add to khata</button><span id="splitMessage" class="small" role="status"></span></div></form></div>
+<div class="panel"><h2>Balances</h2><div class="iou-summary"><div><span class="small">Owed to you</span><strong id="owedToMeTotal">Rs 0</strong></div><div><span class="small">You owe</span><strong id="iOweTotal">Rs 0</strong></div></div><div id="selectedPersonSummary" class="selected-person-summary"></div><div id="iouList"></div></div>
+</div></div>
 </section>
 <div class="footer">Records are stored in this browser's IndexedDB. Export backups regularly; clearing browser data can erase this device's copy. This is a tracking tool, not financial advice.</div>
 </main>
