@@ -38,7 +38,7 @@ jobs:
           test -s site/assets/js/app.js
           grep -q 'id="storageStatus"' site/index.html
           grep -q 'role="tablist"' site/index.html
-          grep -q 'function validDate' site/assets/js/app.js
+          grep -q 'validDate=' site/assets/js/app.js
           grep -q 'function putMany' site/assets/js/app.js
       - name: Set up Python
         uses: actions/setup-python@v5
