@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="./assets/css/app.css">
 </head>
 <body>
-<header><div><strong>Ledger<span style="color:#8fceae">.</span></strong><div class="small" style="color:#b6c8bf">Personal finance, kept on this device</div></div><span id="storageStatus">Checking local storage…</span></header>
+<header><div><strong>Ledger<span style="color:#8fceae">.</span></strong><div class="small" style="color:#b6c8bf">Personal finance, kept on this device</div></div><div class="header-actions"><span id="storageStatus">Checking local storage…</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">Dark mode</button></div></header>
 <main class="wrap">
 <div class="toolbar"><div><h1>Your money, clearly.</h1><div class="notice">Private by default. No account or bank connection required.</div></div><div class="actions"><button class="secondary" id="exportCsv">Export CSV</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></div>
 <section class="cards" aria-label="Financial overview">
