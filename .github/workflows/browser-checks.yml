@@ -5,6 +5,7 @@ on:
     paths:
       - "site/**"
       - "*.py"
+      - "finance_tracker/**"
       - ".github/workflows/browser-checks.yml"
   push:
     branches: [main]
