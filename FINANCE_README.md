@@ -1,92 +1,64 @@
-# Finance Tracker: Python CLI guide
+# Finance Tracker — Python CLI
 
-The Python command-line interface records income, expenses and savings in a local SQLite database. Use it when you prefer terminal workflows, scripted exports or reports.
-
-For a browser interface with budgets, savings goals and local CSV/JSON backup, open [browser app](site/index.html). The browser app and CLI keep separate data stores; they do not sync.
+The CLI records and reviews personal finances from a terminal. It uses a local SQLite database and is separate from the browser app.
 
 ## Install
 
-```bash
+Python 3.9 or newer is required.
+
+```powershell
 git clone https://github.com/Ahmad-Akram7/FINANCE-TRACKER.git
-cd FINANCE-TRACKER
+Set-Location FINANCE-TRACKER
 python -m venv .venv
-# Linux/macOS
-source .venv/bin/activate
-# Windows PowerShell: .venv\Scripts\Activate.ps1
-pip install -r requirements_finance.txt
-pip install -e .
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements_finance.txt
+python -m pip install -e .
 finance-tracker --help
 ```
 
-If the editable install does not expose the command, inspect setup.py and the installed entry points before changing the environment.
+On Linux/macOS, activate with `source .venv/bin/activate`.
 
 ## Common commands
-
-Add income, expenses or a savings transfer:
 
 ```bash
 finance-tracker add --type income --amount 3500 --category "Salary"
 finance-tracker add --type expense --amount 55.40 --category "Groceries" --description "Weekly shop"
 finance-tracker add --type savings --amount 500 --category "Emergency Fund"
-```
 
-List and filter transactions:
-
-```bash
 finance-tracker list
 finance-tracker list --type expense --category food --limit 20
 finance-tracker search "monthly"
-```
 
-Review totals and category spending:
-
-```bash
 finance-tracker report --period month
 finance-tracker breakdown --type expense
 finance-tracker budget Groceries 400 --period month
-```
-
-Create a chart report or export transactions:
-
-```bash
-finance-tracker visual-report --period month --output monthly_report.png
 finance-tracker export --output transactions.csv
-```
+finance-tracker visual-report --period month --output monthly_report.png
 
-Delete a transaction by its ID after checking the displayed record:
-
-```bash
+# Check the record ID before deleting
 finance-tracker delete 42
 ```
 
-Use `finance-tracker --help` and each command's `--help` output as the source of truth for the installed version.
+Use `finance-tracker --help` and each command's `--help` as the source of truth for the installed version.
 
-## Local database
+## Storage
 
-The CLI uses SQLite by default, stored at `~/.finance_tracker.db`. Set `FINANCE_DB_URL` to choose another SQLAlchemy-compatible database URL. Keep the database file private and make regular backups.
+The CLI uses SQLite at `~/.finance_tracker.db` by default. Set `FINANCE_DB_URL` to select another SQLAlchemy-compatible database URL. Protect and back up the database file.
+
+The browser app stores data separately in IndexedDB/localStorage. There is no automatic sync between the interfaces.
 
 ## Tests
 
-Install the test dependencies and run the suite:
-
-```bash
-pip install pytest pytest-cov
-pytest -v
+```powershell
+python -m pip install -e .
+python -m pip install pytest
+python -m pytest -q
 ```
 
-The project includes tests for transaction validation, CRUD operations, summaries, category totals and search. Run them after changing core calculations or persistence.
+Tests use an in-memory SQLite database and should not modify your personal CLI database.
 
 ## Data and security
 
-- The CLI stores data locally by default. Protect your operating-system account and database file.
-- The browser app stores transactions in IndexedDB and budgets/goals in localStorage. Browser data may be cleared and does not sync between devices.
-- Export backups before changing devices or clearing browser data.
-- Neither interface connects to banks or provides investment, tax or financial advice.
+This is a personal tracking tool, not financial, investment, tax, or accounting advice. Neither interface connects to a bank. Neither database is encrypted by this application; do not store passwords or full account numbers. Export a browser JSON backup before clearing site data or moving devices.
 
-## Project notes
-
-The product research and scope decisions are documented in [Docs/finance-manager-research.md](Docs/finance-manager-research.md). The browser screen map and feature checklist live in [replication map](Docs/replica-map.md) and [feature matrix](Docs/feature-matrix.csv).
-
-## License
-
-See [LICENSE](LICENSE).
+See [main README](README.md) and [product audit](Docs/PRODUCT_AUDIT.md).

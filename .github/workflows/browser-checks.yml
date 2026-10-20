@@ -6,6 +6,11 @@ on:
       - "site/**"
       - "*.py"
       - "finance_tracker/**"
+      - "README.md"
+      - "FINANCE_README.md"
+      - "Docs/**"
+      - "requirements_finance.txt"
+      - "setup.py"
       - ".github/workflows/browser-checks.yml"
   push:
     branches: [main]
@@ -13,6 +18,11 @@ on:
       - "site/**"
       - "*.py"
       - "finance_tracker/**"
+      - "README.md"
+      - "FINANCE_README.md"
+      - "Docs/**"
+      - "requirements_finance.txt"
+      - "setup.py"
       - ".github/workflows/browser-checks.yml"
   workflow_dispatch:
 
@@ -36,6 +46,10 @@ jobs:
           test -s site/index.html
           test -s site/assets/css/app.css
           test -s site/assets/js/app.js
+          test -s Docs/PRODUCT_AUDIT.md
+          test -s Docs/feature-matrix.csv
+          test -s Docs/browser-preview.svg
+          test -s Docs/architecture.svg
           grep -q 'id="storageStatus"' site/index.html
           grep -q 'role="tablist"' site/index.html
           grep -q 'validDate=' site/assets/js/app.js

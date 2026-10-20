@@ -1,52 +1,73 @@
-# Finance Tracker — Product and Implementation Audit
+# Product and implementation audit
 
-Reviewed: 2026-10-20  
-Scope: static browser app, Python CLI packaging, and automated checks.
+**Reviewed:** 2026-10-20  
+**Scope:** browser app, Python CLI, repository structure, documentation, and CI.  
+**Status:** automated static checks are in place; browser end-to-end and assistive-technology verification remain release gates.
 
-## Product assessment
+## Executive summary
 
-The core idea is useful as a **local-first personal finance tracker**: manual income/expense/savings entry, monthly overview, category budgets, savings goals, CSV import/export, JSON backup/restore, and a personal khata ledger. The static browser app is inexpensive to host and requires no server, bank integration, or account.
+Ledger is a useful local-first personal finance tool for manual transaction tracking and informal shared-debt accounting. It provides a static browser app, no account requirement, category budgets, savings goals, CSV import/export, JSON backup/restore, and a person-based khata ledger.
 
-Do not position it as an encrypted vault or bank-grade financial system. Browser storage is not encrypted at rest, data stays in the current browser profile, and clearing browser data can erase the local copy. Users need regular backups.
+The repository contains two separate applications:
+- **Browser app:** static files in `site/`; transactions in IndexedDB, settings and khata lists in localStorage.
+- **Python CLI:** installable package in `finance_tracker/`; records in local SQLite.
 
-## Issues addressed on this branch
+They do not sync. The browser app is not an encrypted vault and should not be marketed as a bank-grade or security-critical financial system.
 
-| Priority | Finding | Change |
+## Repository cleanup decisions
+
+| Path | Purpose | Decision |
 |---|---|---|
-| High | Python CLI and tests imported `finance_tracker.*`, but the repository only contained root-level modules. The package was missing, so test collection failed and the declared CLI entry point could not install correctly. | Add the installable `finance_tracker` package, interface modules, package version, and root-level compatibility shims. |
-| High | A render failure could be reported as a database-open failure, obscuring the cause of the browser storage warning. | Separate IndexedDB initialization from the initial render and display actionable technical detail. |
-| High | CSV import and backup restore could fail after writing only some transactions. | Validate import data before writes and use one IndexedDB read/write transaction for transaction records. |
-| High | Savings rate was calculated from income left after expenses rather than recorded savings transfers. | Define savings rate as explicit savings transfers divided by income and clarify the label. |
-| Medium | Monthly insight ignored savings transfers while the net cash-flow KPI subtracted them. | Align insight calculations and empty-state messaging with the KPI. |
-| Medium | Budget spending could fail to match a budget if the category's capitalization differed. | Match normalized category names. |
-| Medium | Impossible dates could pass simple ISO date-shape checks. | Validate actual calendar dates. |
-| Medium | Tabs lacked complete keyboard navigation and accessible selected-state behavior. | Add semantic tab/tabpanel relationships and arrow/Home/End navigation. |
-| Medium | Responsive layouts, focus indicators, dark-mode contrast, and reduced-motion behavior needed attention. | Improve touch targets, focus states, responsive styling, and theme contrast. |
-| Medium | The repository had no dedicated pull-request check for the browser app, and existing CLI tests required project dependencies. | Add CI that checks JS syntax, validates key static files, installs the package, and runs pytest. |
+| `site/` | Browser app and static deployment output | Keep |
+| `finance_tracker/` | Installable Python CLI package | Keep |
+| Root Python wrappers | Backwards-compatible imports and launchers | Keep; not abandoned duplicates |
+| `.github/workflows/browser-checks.yml` | JavaScript and Python CI | Keep |
+| `.github/workflows/pages.yml` | GitHub Pages deployment | Keep if GitHub Pages is a desired target |
+| `Docs/PRODUCT_AUDIT.md` | Canonical audit and release checklist | Keep |
+| `Docs/finance-manager-research.md` | Product research and scope | Keep |
+| `Docs/feature-matrix.csv` | Current feature inventory | Keep |
+| `Docs/architecture.svg`, `Docs/browser-preview.svg` | Documentation diagrams; UI preview is illustrative | Keep |
+| Duplicate audit files and older replica map | Overlapping or stale documentation | Consolidated into the canonical docs and removed |
 
-## Remaining limitations / release gates
+## Findings and mitigations
 
-1. **Browser E2E tests remain necessary.** Test Firefox and Chromium at desktop and mobile widths: transaction create/delete, budgets, goals, khata repayments, custom splits, CSV import/export, JSON restore, reload persistence, and dark mode.
-2. **Backup restore is not atomic across storage engines.** Transactions are in IndexedDB; budgets, goals, and khata data are in localStorage. Transaction writes are atomic, but a quota failure while updating localStorage can still leave a partially restored backup.
-3. **No encryption at rest.** Anyone with access to the same unlocked browser profile may be able to inspect records. Do not store bank credentials or full account numbers.
-4. **No bank aggregation or multi-device sync.** These are excluded from the current static-app scope.
-5. **Savings rate definition is explicit.** It means recorded savings transfers divided by recorded income; the app does not infer savings that the user has not entered.
-6. **Python CLI and browser data are separate.** The CLI's SQLite database and browser IndexedDB/localStorage do not sync with each other.
+| Priority | Finding | Mitigation / status |
+|---|---|---|
+| High | Browser storage may be unavailable or blocked in a particular browser context. | Header exposes storage status and startup errors should be read in DevTools. Close duplicate tabs if the database is blocked; do not clear data as a first diagnostic step. |
+| High | Green CI does not prove every browser interaction works. | CI checks JS syntax, key static references, package installation, and Python tests. Manual browser regression remains required. |
+| High | Browser data is not encrypted at rest and can be lost when site data is cleared. | Documented prominently; users should keep secure JSON backups and avoid storing credentials or full account numbers. |
+| High | Restore spans IndexedDB and localStorage, which cannot share one atomic transaction. | Transaction records are validated and written in an IndexedDB transaction; localStorage failure can still leave a cross-store restore partially applied. |
+| Medium | CLI and browser app use separate stores. | Documented; no sync is implied. |
+| Medium | GitHub Pages does not deploy to the separately managed Cloudflare project. | Documented as separate deployment paths; Cloudflare can be deployed with Wrangler from the local `site/` directory. |
+| Medium | Savings-rate meaning can be misunderstood. | It means recorded savings transfers divided by recorded income, not inferred surplus or a recommendation. |
+| Medium | CSV date formats can be ambiguous. | Prefer ISO `YYYY-MM-DD` dates; slash/dot formats can be ambiguous. An explicit date-format selector remains a potential improvement. |
+| Medium | Root Python files look duplicated. | They are compatibility shims; deleting them could break old imports and scripts. |
 
-## Manual verification checklist
+## Automated verification
 
-- [ ] Confirm the pull-request CI passes, including editable installation and pytest.
-- [ ] Load the browser app in normal Firefox and inspect Console for errors.
-- [ ] Add income, expense, and savings-transfer records; reload and verify persistence.
-- [ ] Verify savings rate equals savings transfers / income for the current month.
-- [ ] Verify net cash flow subtracts expenses and savings transfers.
-- [ ] Import valid CSV rows, duplicates, quoted commas, and impossible dates; confirm atomic writes.
-- [ ] Export JSON; test valid restore and malformed transaction/list data.
-- [ ] Test khata payments and custom 2–3-person splits to the cent.
-- [ ] Navigate tabs with mouse, Tab, arrow keys, Home, and End.
-- [ ] Check 200% zoom, a 320px viewport, visible focus, dark mode, and reduced motion.
-- [ ] Verify package installation and CLI help after installing from the repository.
+`.github/workflows/browser-checks.yml` runs JavaScript syntax/static checks, installs the Python package, and runs `pytest`. `.github/workflows/pages.yml` separately validates JS syntax and publishes `site/` to GitHub Pages. Neither is a full browser E2E suite. A green GitHub Pages workflow does not confirm a separate Cloudflare project was updated.
 
-## Release recommendation
+## Manual release checklist
 
-**Reasonable for a private/local-first MVP after manual browser verification. Not ready to advertise as a security-focused or production-grade financial product.** Before wider distribution, prioritize browser E2E tests, clearer cross-store backup recovery, and a documented privacy/threat model.
+- [ ] Open the intended URL in Firefox and Chromium in a normal (non-private) window.
+- [ ] Confirm storage status; add a transaction, reload, and verify persistence.
+- [ ] Add income, expense, and savings records; verify totals and savings-rate definition.
+- [ ] Test category spending and budget matching with case differences.
+- [ ] Create/remove goals; test zero saved amount and optional target date.
+- [ ] Test khata directions, repayments, balances, and custom 2–3-person splits down to the cent.
+- [ ] Import CSV containing quoted commas/newlines, duplicates, malformed rows, and impossible dates.
+- [ ] Export JSON and restore valid/invalid backups; ensure invalid transactions are rejected before writes.
+- [ ] Navigate tabs with mouse, Tab, arrows, Home, and End.
+- [ ] Check a 320px viewport, 200% zoom, visible focus, dark mode, and reduced motion.
+- [ ] Confirm the intended hosting target; GitHub Pages and Cloudflare Pages are separate.
+- [ ] Keep a known-good JSON backup before testing storage recovery.
+
+## Product scope
+
+**Included:** manual tracking, monthly overview, budgets, savings goals, search/filter, CSV workflows, JSON backup/restore, and personal khata entries.
+
+**Not included:** bank aggregation, login, multi-device sync, encrypted-at-rest storage, shared cloud ledger, automatic subscription detection, bill reminders, investment valuation, multi-currency conversion, or financial advice.
+
+## Recommendation
+
+Treat Ledger as a **local-first MVP**. Do not claim production-grade reliability until browser regression tests cover storage, import/restore, and calculations. The highest-value next step is repeatable Firefox/Chromium end-to-end tests, including storage failure and backup recovery.

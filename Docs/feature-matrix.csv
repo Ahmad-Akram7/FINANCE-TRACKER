@@ -1,15 +1,19 @@
-feature,area,priority,original,clone,notes
-Monthly income/expense/net overview,Dashboard,must,yes,yes,Current calendar month
-Savings-rate calculation,Dashboard,must,yes,yes,Surplus divided by income
-Manual income/expense/savings entry,Transactions,must,yes,yes,Validated positive amount
-Transaction search and type filter,Transactions,must,yes,yes,Search category and description
-Delete with confirmation,Transactions,must,yes,yes,IndexedDB transaction
-Category spend breakdown,Reports,should,yes,yes,Current month bar chart
-Monthly category budgets,Budgeting,must,yes,yes,Local browser storage
-Savings goals,Goals,should,yes,yes,Target and progress
-CSV export,Backup,must,yes,yes,Transactions only
-JSON backup and restore,Backup,must,yes,yes,Transactions budgets goals
-Bank account synchronization,Connectivity,could,yes,skip,Requires provider and credential/security review
-Recurring transaction detection,Automation,could,yes,skip,Not implemented in local-only first slice
-Multi-device sync,Sync,could,yes,skip,Requires server or sync protocol
-Encryption at rest,Security,must,yes,partial,Browser storage is not encrypted at rest
+feature,area,priority,implemented,status_or_notes
+Current-month income/expense/net overview,Dashboard,must,yes,Calendar-month totals
+Recorded savings rate,Dashboard,must,yes,Savings transfers divided by recorded income; em dash when income is zero
+Manual income/expense/savings entry,Transactions,must,yes,Positive amount with category and date validation
+Transaction search and type filter,Transactions,must,yes,Search category and description
+Delete with confirmation,Transactions,must,yes,Stored transaction removed from IndexedDB
+Category spend breakdown,Reports,should,yes,Current-month expense categories
+Six-month cash-flow trend,Reports,should,yes,Income and expenses across six months
+Monthly category budgets,Budgeting,must,yes,Stored in localStorage
+Savings goals,Goals,should,yes,Target and progress with optional target date
+CSV import,Backup,must,yes,Validate input before bulk transaction write
+CSV export,Backup,must,yes,Transactions only
+JSON backup and restore,Backup,must,yes,Transactions budgets goals khata people and currency preference; restore spans separate storage engines
+Person-based khata ledger,Shared expenses,must,yes,Running balance and repayment tracking
+Custom 2–3-person splits,Shared expenses,should,yes,Editable shares and per-person direction
+Light and dark themes,Accessibility,should,yes,Full WCAG audit not claimed
+Bank account synchronization,Connectivity,could,no,Requires provider integration and security review
+Multi-device sync,Sync,could,no,Requires server or sync protocol
+Encryption at rest,Security,must,no,Browser and CLI data are not encrypted by this application
