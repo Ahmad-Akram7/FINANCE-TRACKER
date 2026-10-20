@@ -1,49 +1,140 @@
-# Finance Tracker
+# Ledger — Personal Finance Tracker
 
-A local-first personal finance tracker plus a Python CLI. The browser app is a static site and can be hosted on GitHub Pages or Cloudflare Pages without a server, build step, paid API, or account.
+<p align="center"><img src="Docs/social-preview.svg" alt="Ledger personal finance project artwork" width="100%"></p>
 
-## Browser app
+<p align="center"><strong>A local-first way to understand spending, savings, and money owed.</strong><br>No account, bank connection, paid API, or backend is required for the browser app.</p>
 
-- **Live locally:** open [site/index.html](site/index.html) in a modern browser.
-- **GitHub Pages:** the included Actions workflow deploys the `site/` directory on pushes to `main`. In repository Settings → Pages, select **GitHub Actions** as the build/deployment source.
-- **Cloudflare Pages:** create a Pages project connected to this repository. Set the build command to none (leave it blank) and the build output directory to `site`. No environment variables are required.
+<p align="center">
+<a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/actions/workflows/browser-checks.yml"><img alt="Browser and CLI checks" src="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/actions/workflows/browser-checks.yml/badge.svg"></a>
+<a href="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/actions/workflows/pages.yml"><img alt="GitHub Pages deployment" src="https://github.com/Ahmad-Akram7/FINANCE-TRACKER/actions/workflows/pages.yml/badge.svg"></a>
+<a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
+</p>
 
-Features: income/expense/savings transactions, monthly cash-flow summary, category spending, budgets, savings goals, search/filter, CSV export and JSON backup/restore.
+## Browser app preview
 
-## Project layout
+This is an **illustrative UI preview**, not a live screenshot or proof that a deployment is healthy.
+
+<p align="center"><img src="Docs/browser-preview.svg" alt="Illustration of Ledger's dashboard, finance summary cards, chart, transaction list, and section tabs" width="100%"></p>
+
+## Features
+
+- **Overview:** current-month income, expenses, net cash flow, savings rate, category spending, and six-month trend.
+- **Transactions:** record income, expenses, and savings transfers; search/filter; delete with confirmation.
+- **Budgets and goals:** category spending limits and savings target progress.
+- **Money owed (khata):** running balances by person, repayments, and editable 2–3-person splits.
+- **CSV:** import and export transaction records.
+- **JSON backup:** export/restore transactions, budgets, goals, khata entries, people, and currency preference.
+- **Responsive themes:** light/dark mode and mobile-friendly layout.
+
+## Two separate interfaces
+
+| Interface | Best for | Data location |
+|---|---|---|
+| Browser app (`site/`) | Visual dashboard, budgets, goals, CSV, khata | IndexedDB + localStorage |
+| Python CLI (`finance_tracker/`) | Terminal workflows, filtering, reports, CSV export | Local SQLite database |
+
+**They do not sync.** Browser records are not available in the CLI database and vice versa.
+
+## Run the browser app locally
+
+Open `site/index.html` in a current browser. Serving it over localhost or HTTPS is generally more reliable for browser storage than opening a local file directly.
+
+```powershell
+# From the repository root
+python -m http.server 8000
+```
+
+Then visit http://localhost:8000/site/ . Add a test transaction, reload, and confirm it persists before relying on the app.
+
+## Deploy
+
+### GitHub Pages
+
+The `.github/workflows/pages.yml` workflow publishes the `site/` directory to GitHub Pages on qualifying pushes to `main`. Set repository Pages source to **GitHub Actions**.
+
+### Cloudflare Pages — manual Wrangler deployment
+
+Cloudflare deployment is independent of GitHub Pages. To deploy from a local clone:
+
+```powershell
+Set-Location "D:\Professional\Finance Tracker\FINANCE-TRACKER"
+git pull origin main
+npx.cmd wrangler@latest pages deploy site --project-name finance-tracker
+```
+
+Use your own clone path if different. `npx.cmd` avoids the PowerShell script-policy issue that can block `npx.ps1`. This does not update GitHub Pages.
+
+## Run the Python CLI
+
+Python 3.9+:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements_finance.txt
+python -m pip install -e .
+finance-tracker --help
+```
+
+See [the CLI guide](FINANCE_README.md).
+
+## Repository map
 
 ```text
 .
-├── site/                    # Deployable static web app
-│   ├── index.html
-│   ├── assets/
-│   │   ├── css/app.css
-│   │   └── js/app.js
-│   └── _headers             # Cloudflare Pages response headers
-├── .github/workflows/
-│   └── pages.yml            # GitHub Pages deployment
-├── Docs/                    # Research and implementation notes
-├── cli.py, core.py, ...     # Existing Python CLI
-├── tests (test_core.py)     # CLI tests
-└── setup.py
+├── site/                       # Static browser app and deployable assets
+├── finance_tracker/            # Installable Python CLI package
+├── test_core.py                # Core Python tests
+├── requirements_finance.txt
+├── setup.py
+├── Docs/                       # Audit, research, feature matrix, visuals
+└── .github/workflows/          # Validation and GitHub Pages deployment
 ```
 
-## Privacy and storage
+Root-level Python modules such as `cli.py`, `core.py`, and `models.py` are compatibility shims for older imports and scripts. They are intentionally retained to avoid breaking existing usage.
 
-The browser app stores transactions in IndexedDB and budgets, goals, khata entries, people, and preferences in localStorage in the current browser profile. It does not sync across devices or connect to banks. Browser storage is **not encrypted at rest**; do not enter bank credentials or full account numbers. Export JSON backups regularly and keep them somewhere safe. CSV export contains transactions; JSON backup includes transactions, budgets, goals, khata entries, people, and currency preference. Restore merges transactions by ID and replaces any included settings/khata lists after confirmation. Currency formatting does not convert currencies.
+## Checks
 
-The currency display defaults to PKR; this formats values but does not convert currencies.
+```powershell
+node --check site/assets/js/app.js
+python -m pip install -e .
+python -m pytest -q
+```
 
-## Python CLI
+CI runs JavaScript syntax/static checks and Python tests. These do **not** replace browser end-to-end testing. See [the product audit](Docs/PRODUCT_AUDIT.md) for the release checklist.
 
-See [FINANCE_README.md](FINANCE_README.md) for installation and terminal commands. The CLI uses a local SQLite database by default and remains independent of the browser app.
+## Troubleshooting
 
-## Documentation
+### Transactions do not save
 
-- [Finance manager research](Docs/finance-manager-research.md)
-- [Replication map](Docs/replica-map.md)
+- Check the storage status in the header.
+- Open DevTools → Console and inspect the first relevant red error; a layout/unstyled-content warning alone does not prove storage failed.
+- If the error says the database is blocked, close duplicate Ledger tabs and reload.
+- Do not clear site data or reset IndexedDB if you need to preserve records.
+- Export a JSON backup whenever storage works.
+
+### The live URL does not show the latest code
+
+Confirm which host you are testing. GitHub Pages and Cloudflare Pages are separate deployments. A successful GitHub Pages workflow does not confirm that Cloudflare was updated; deploy `site/` to the intended host.
+
+### JSON restore fails
+
+Use a Ledger-generated JSON file and preserve the original. Transactions are stored in IndexedDB while settings/khata are in localStorage, so a restore cannot be atomic across both storage systems.
+
+## Privacy and data safety
+
+Browser transactions use IndexedDB; budgets, goals, khata entries, people, and preferences use localStorage. The CLI uses separate SQLite storage. This application does **not** provide encryption at rest, bank integration, login, or multi-device sync. Currency formatting does not convert currencies. Do not store passwords or full account numbers. Keep backups in a secure location.
+
+## Documentation and visuals
+
+- [Product and implementation audit](Docs/PRODUCT_AUDIT.md)
+- [Product research and scope](Docs/finance-manager-research.md)
 - [Feature matrix](Docs/feature-matrix.csv)
+- [Architecture diagram](Docs/architecture.svg)
+- [Illustrative browser preview](Docs/browser-preview.svg)
+- [CLI terminal preview](Docs/preview.svg)
+- [Documentation index](Docs/README.md)
 
 ## License
 
-See [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
