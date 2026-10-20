@@ -18,6 +18,11 @@ on:
       - "site/**"
       - "*.py"
       - "finance_tracker/**"
+      - "README.md"
+      - "FINANCE_README.md"
+      - "Docs/**"
+      - "requirements_finance.txt"
+      - "setup.py"
       - ".github/workflows/browser-checks.yml"
   workflow_dispatch:
 
