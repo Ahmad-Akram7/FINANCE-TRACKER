@@ -51,6 +51,11 @@ jobs:
           test -s Docs/browser-preview.svg
           test -s Docs/architecture.svg
           grep -q 'id="storageStatus"' site/index.html
+          grep -q 'class="sidebar"' site/index.html
+          grep -q 'class="mobile-nav"' site/index.html
+          grep -q 'id="quickAddDialog"' site/index.html
+          grep -q 'id="reportMonthlyBars"' site/index.html
+          grep -q 'function renderCategoryBreakdown' site/assets/js/app.js
           grep -q 'role="tablist"' site/index.html
           grep -q 'validDate=' site/assets/js/app.js
           grep -q 'function putMany' site/assets/js/app.js
