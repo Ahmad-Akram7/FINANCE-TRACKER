@@ -18,7 +18,8 @@ This is an **illustrative UI preview**, not a live screenshot or proof that a de
 
 ## Features
 
-- **Overview:** current-month income, expenses, net cash flow, savings rate, category spending, and six-month trend.
+- **Responsive dashboard:** persistent desktop sidebar, mobile bottom navigation, compact metric cards, and a quick-add dialog.
+- **Reports & charts:** interactive six-month cash-flow trend, spending donut chart, category drill-down, and six- or twelve-month income/expense comparison.
 - **Transactions:** record income, expenses, and savings transfers; search/filter; delete with confirmation.
 - **Budgets and goals:** category spending limits and savings target progress.
 - **Money owed (khata):** running balances by person, repayments, and editable 2–3-person splits.

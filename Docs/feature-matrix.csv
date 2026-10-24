@@ -17,3 +17,9 @@ Light and dark themes,Accessibility,should,yes,Full WCAG audit not claimed
 Bank account synchronization,Connectivity,could,no,Requires provider integration and security review
 Multi-device sync,Sync,could,no,Requires server or sync protocol
 Encryption at rest,Security,must,no,Browser and CLI data are not encrypted by this application
+Desktop sidebar navigation,Mobile UX,must,yes,Persistent navigation for wide layouts
+Mobile bottom navigation,Mobile UX,must,yes,Fixed Home Activity Insights Khata bar with central quick add
+Quick-add transaction dialog,Transactions,must,yes,Entry from fixed add control without scrolling to form
+Interactive category donut,Reports,should,yes,Current-month category proportions; category tap filters expenses
+Interactive cash-flow chart,Reports,should,yes,Tap monthly chart points to inspect income expenses savings and net
+6/12-month comparison bars,Reports,should,yes,Selectable report range with month drill-down

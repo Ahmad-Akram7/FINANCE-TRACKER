@@ -1,0 +1,15 @@
+feature,area,priority,reference_pattern,clone,notes
+Persistent desktop sidebar,Navigation,must,Common desktop finance navigation,yes,Ledger-specific styling and labels
+Mobile bottom navigation,Navigation,must,Mobile primary-destination bar,yes,Home Activity Insights Khata and central add action
+Quick-add modal,Transactions,must,Fast-entry interaction pattern,yes,Accessible labelled form and validation
+Monthly summary cards,Dashboard,must,At-a-glance financial summary,yes,Income expense net and recorded savings rate
+Cash-flow line chart,Reports,should,Monarch/Copilot monthly trend patterns,yes,SVG; tap a month for totals
+Category donut and legend,Reports,should,Monarch category report pattern,yes,Locally computed CSS conic-gradient; category tap filters transactions
+6/12-month income vs expense bars,Reports,should,YNAB/Copilot comparison pattern,yes,No remote chart library; month drill-down
+Transaction search and type filter,Transactions,must,Finance register search,yes,Category and description search with type filter
+Budget progress,Planning,must,Category budget monitoring,yes,Current month against local limits
+Savings goal progress,Planning,should,Goal tracking pattern,yes,Target and saved amount
+Khata and custom split,Shared expenses,must,Product-specific local workflow,yes,Existing per-person directions and repayment tracking
+Bank sync,Connectivity,could,Not in local-first scope,no,Requires provider integration and security review
+Cloud sync,Sync,could,Not in local-first scope,no,Requires backend and account/security model
+Encryption at rest,Security,must,Security requirement,no,Not provided by current app; do not imply otherwise
