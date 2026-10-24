@@ -75,7 +75,7 @@ function renderInsights(rows){
 function renderCategoryBreakdown(rows,monthKey,containerId){
  const grouped=Object.create(null),palette=['#27885c','#e1a04b','#6688d6','#c46ab4','#48a8a1','#d56b60','#8c79ca'];
  rows.filter(t=>t.type==='expense'&&t.date&&t.date.slice(0,7)===monthKey).forEach(t=>{const name=String(t.category||'Uncategorized');grouped[name]=(grouped[name]||0)+Number(t.amount||0)});
- const cats=Object.entries(grouped).sort((a,b)=>b[1]-a[1]).slice(0,7),total=cats.reduce((s,c)=>s+c[1],0),container=$('#'+containerId);if(!container)return;
+ const allCats=Object.entries(grouped).sort((a,b)=>b[1]-a[1]),total=allCats.reduce((s,c)=>s+c[1],0),cats=allCats.length>7?[...allCats.slice(0,6),['Other',allCats.slice(6).reduce((s,c)=>s+c[1],0)]]:allCats,container=$('#'+containerId);if(!container)return;
  if(!cats.length||total<=0){container.innerHTML='<div class="empty">Add expenses to see your spending breakdown.</div>';return}
  let cursor=0;const segments=cats.map(([name,value],i)=>{const start=cursor;cursor+=value/total*100;return palette[i%palette.length]+' '+start.toFixed(2)+'% '+cursor.toFixed(2)+'%'}).join(',');
  const donut='<div class="category-donut-wrap"><div class="donut-chart" role="img" aria-label="Spending by category for '+esc(monthKey)+'" style="background:conic-gradient('+segments+')"><div class="donut-center"><strong>'+money(total)+'</strong><small>Total spent</small></div></div></div>';
@@ -123,7 +123,7 @@ $('#goalForm').addEventListener('submit',e=>{e.preventDefault();const f=new Form
 document.addEventListener('click',async e=>{
  const quick=e.target.closest('[data-open-quickadd]');if(quick){const dialog=$('#quickAddDialog');if(dialog&&!dialog.open){$('#quickAddForm').elements.date.value=today();$('#quickFormMessage').textContent='';dialog.showModal();setTimeout(()=>$('#quickAddForm').elements.amount.focus(),60)}return}
  const openKhata=e.target.closest('[data-open-tab]');if(openKhata){$('#tab-debts').click();return}
- const category=e.target.closest('[data-category-filter]');if(category){$('#search').value=category.dataset.categoryFilter;$('#typeFilter').value='expense';$('#tab-transactions').click();return}
+ const category=e.target.closest('[data-category-filter]');if(category){$('#search').value=category.dataset.categoryFilter;$('#typeFilter').value='expense';$('#tab-transactions').click();await render();return}
  const chartPoint=e.target.closest('[data-chart-month]');if(chartPoint){const rows=await all();showMonthDetail(chartPoint.dataset.chartMonth,rows,'chartDetail');return}
  const reportMonth=e.target.closest('[data-report-month]');if(reportMonth){$$('[data-report-month]').forEach(b=>b.classList.toggle('selected',b===reportMonth));const rows=await all();showMonthDetail(reportMonth.dataset.reportMonth,rows,'reportMonthDetail');return}
  const tab=e.target.closest('[data-tab]');if(tab){
@@ -141,6 +141,8 @@ document.addEventListener('click',async e=>{
  const pay=e.target.closest('.recordPayment');if(pay){const item=getIous().find(i=>i.id===pay.dataset.id);if(item){const remaining=Math.max(0,Number(item.amount)-Number(item.paid||0)),raw=prompt('Enter payment amount. Outstanding: '+money(remaining),remaining.toFixed(2));if(raw!==null){const amount=Number(raw);if(!Number.isFinite(amount)||amount<=0||amount>remaining+0.005){alert('Enter an amount greater than zero and no more than the outstanding balance.');return}item.paid=Math.min(Number(item.amount),Math.round((Number(item.paid||0)+amount+Number.EPSILON)*100)/100);localStorage.setItem('ledger-ious',JSON.stringify(getIous().map(i=>i.id===item.id?item:i)));renderIous()}}}
 });
 $('#reportRange').addEventListener('change',async()=>{try{renderInsights(await all())}catch(err){console.error('Could not refresh report range',err)}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-chart-month],[data-report-month]')){e.preventDefault();e.target.click()}});
+
 
 $('.tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const tabs=$$('.tabs [role="tab"]'),current=tabs.indexOf(document.activeElement);if(current<0)return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(current+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next].focus();tabs[next].click()});
 $('#search').addEventListener('input',render);$('#typeFilter').addEventListener('change',render);
