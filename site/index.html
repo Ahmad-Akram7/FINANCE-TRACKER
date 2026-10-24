@@ -47,7 +47,7 @@
 </section>
 <div class="tabs" role="tablist" aria-label="Finance sections"><button id="tab-overview" class="active" role="tab" aria-selected="true" aria-controls="overview" tabindex="0" data-tab="overview">Overview</button><button id="tab-transactions" role="tab" aria-selected="false" aria-controls="transactions" tabindex="-1" data-tab="transactions">Transactions</button><button id="tab-budgets" role="tab" aria-selected="false" aria-controls="budgets" tabindex="-1" data-tab="budgets">Budgets</button><button id="tab-goals" role="tab" aria-selected="false" aria-controls="goals" tabindex="-1" data-tab="goals">Savings goals</button><button id="tab-debts" role="tab" aria-selected="false" aria-controls="debts" tabindex="-1" data-tab="debts">Khata &amp; split bills</button></div>
 <section id="overview" class="tabcontent" role="tabpanel" aria-labelledby="tab-overview" tabindex="0" aria-hidden="false">
-<div class="layout"><div class="panel"><h2>Recent transactions</h2><div id="recentList" class="tablewrap"></div></div><div class="stack"><div class="panel category-panel"><div class="panel-heading"><div><h2>Spending breakdown</h2><p class="small">Where this month’s money went</p></div><button class="text-action" type="button" data-tab="reports">View reports ↗</button></div><div id="categoryDonut" class="category-donut-wrap"></div><div id="categoryChart"></div></div><div class="panel"><h2>Quick add</h2><form id="txForm" class="formgrid">
+<div class="layout"><div class="panel"><h2>Recent transactions</h2><div id="recentList" class="tablewrap"></div></div><div class="stack"><div class="panel category-panel"><div class="panel-heading"><div><h2>Spending breakdown</h2><p class="small">Where this month’s money went</p></div><button class="text-action" type="button" data-tab="reports">View reports ↗</button></div><div id="categoryBreakdown"></div></div><div class="panel"><h2>Quick add</h2><form id="txForm" class="formgrid">
 <label>Type<select name="type"><option value="expense">Expense</option><option value="income">Income</option><option value="savings">Savings transfer</option></select></label>
 <label>Amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
 <label>Category<input name="category" required maxlength="60" placeholder="Groceries"></label>
@@ -92,6 +92,17 @@
 </section>
 <div class="footer">Records are stored in this browser's IndexedDB. Export backups regularly; clearing browser data can erase this device's copy. This is a tracking tool, not financial advice.</div>
 </main>
+<dialog id="quickAddDialog" class="quick-add-dialog" aria-labelledby="quickAddTitle">
+<div class="dialog-heading"><div><span class="eyebrow">QUICK ENTRY</span><h2 id="quickAddTitle">Add transaction</h2><p class="small">Record it now. It stays on this device.</p></div><button type="button" class="dialog-close" id="closeQuickAdd" aria-label="Close add transaction">×</button></div>
+<form id="quickAddForm" class="formgrid">
+<label>Type<select name="type"><option value="expense">Expense</option><option value="income">Income</option><option value="savings">Savings transfer</option></select></label>
+<label>Amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00" inputmode="decimal"></label>
+<label>Category<input name="category" required maxlength="60" placeholder="Groceries"></label>
+<label>Date<input name="date" type="date" required></label>
+<label class="full">Description (optional)<input name="description" maxlength="180" placeholder="What was this for?"></label>
+<div class="form-actions"><button type="submit">Save transaction</button><span id="quickFormMessage" class="small" role="status"></span></div>
+</form>
+</dialog>
 <nav class="mobile-nav" aria-label="Bottom navigation">
   <button class="mobile-nav-item active" type="button" data-tab="overview"><span>⌂</span><small>Home</small></button>
   <button class="mobile-nav-item" type="button" data-tab="transactions"><span>↔</span><small>Activity</small></button>
