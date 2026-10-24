@@ -3,16 +3,16 @@ name: Build Android APK and publish GitHub Release
 on:
   push:
     branches: [main]
-    tags:
-      - "android-v*"
     paths:
+      - "site/**"
       - ".github/workflows/android-apk-release.yml"
+      - "Docs/ANDROID-APK.md"
   workflow_dispatch:
     inputs:
       release_tag:
-        description: "Release tag, e.g. android-v1.0.0"
+        description: "Release tag, e.g. android-v1.1.0"
         required: true
-        default: "android-v1.0.0"
+        default: "android-v1.1.0"
 
 permissions:
   contents: write
@@ -41,6 +41,13 @@ jobs:
 
       - name: Validate web app JavaScript
         run: node --check site/assets/js/app.js
+
+      - name: Check required redesigned screens
+        run: |
+          grep -q 'class="sidebar"' site/index.html
+          grep -q 'class="mobile-nav"' site/index.html
+          grep -q 'id="reportMonthlyBars"' site/index.html
+          grep -q 'id="quickAddDialog"' site/index.html
 
       - name: Install Capacitor
         run: |
@@ -81,15 +88,17 @@ jobs:
       - name: Publish APK to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || (github.ref_type == 'tag' && github.ref_name || 'android-v1.0.0') }}
-          name: Ledger Finance Tracker Android ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || (github.ref_type == 'tag' && github.ref_name || 'android-v1.0.0') }}
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || format('android-v1.1.{0}', github.run_number) }}
+          name: Ledger Finance Tracker Android ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || format('android-v1.1.{0}', github.run_number) }}
           body: |
-            Initial Android package for Ledger Finance Tracker.
+            Ledger Finance Tracker Android build.
 
-            - Installs as an Android app and bundles the static web app locally.
-            - Transaction records are stored in the app's local WebView storage; this is separate from browser data and the Python CLI database.
-            - Export a JSON backup regularly. The app does not provide encryption at rest or cloud sync.
-            - This initial APK is debug-signed for straightforward installation/testing; future APKs signed with a different key may not install as upgrades over it.
+            - Responsive desktop sidebar and persistent mobile bottom navigation.
+            - Quick-entry dialog for transactions.
+            - Interactive cash-flow and category charts with month drill-downs.
+            - Reports with 6- or 12-month income/expense comparisons.
+            - App data remains local to this Android installation and is separate from browser and CLI data.
+            - Debug-signed for testing; no production signing key is configured.
           files: Ledger-Finance-Tracker.apk
           fail_on_unmatched_files: true
           generate_release_notes: true
