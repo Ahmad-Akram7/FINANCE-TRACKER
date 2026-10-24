@@ -180,3 +180,10 @@ html[data-theme="dark"] .topbar{background:var(--card);color:var(--ink);border-b
  .utility-menu{position:static}.utility-popover{position:fixed;bottom:82px;left:12px;right:12px;width:auto;max-height:65vh;overflow:auto}
 }
 @media(max-width:390px){.wrap{padding-left:10px;padding-right:10px}.panel{padding:12px}.toolbar h1{font-size:23px}.value{font-size:18px}.header-actions #storageStatus{max-width:96px}.mobile-nav-item small{font-size:8px}.report-monthly-bars{gap:2px}.month-label{font-size:8px}}
+
+.quick-add-dialog{width:min(520px,calc(100vw - 28px));max-width:520px;max-height:min(90vh,760px);overflow:auto;padding:22px;border:1px solid var(--surface-border);border-radius:20px;background:var(--card);color:var(--ink);box-shadow:0 28px 90px rgba(0,0,0,.28)}
+.quick-add-dialog::backdrop{background:rgba(5,18,11,.58);backdrop-filter:blur(3px)}
+.dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.dialog-heading h2{margin:4px 0;font-size:23px;letter-spacing:-.8px}.dialog-heading p{margin:0}.dialog-close{width:38px;height:38px;min-height:38px;padding:0;border-radius:12px;background:var(--bg);color:var(--ink);font-size:23px}
+.quick-add-dialog .formgrid{gap:13px}.quick-add-dialog .form-actions button{min-width:155px}.quick-add-dialog .form-actions{align-items:center}
+html[data-theme="dark"] .quick-add-dialog{background:var(--card);color:var(--ink)}
+@media(max-width:600px){.quick-add-dialog{padding:18px;border-radius:18px}.quick-add-dialog .formgrid{grid-template-columns:1fr}.quick-add-dialog .form-actions button{width:100%}.quick-add-dialog .full{grid-column:auto}}
