@@ -79,7 +79,7 @@ function renderCategoryBreakdown(rows,monthKey,containerId){
  if(!cats.length||total<=0){container.innerHTML='<div class="empty">Add expenses to see your spending breakdown.</div>';return}
  let cursor=0;const segments=cats.map(([name,value],i)=>{const start=cursor;cursor+=value/total*100;return palette[i%palette.length]+' '+start.toFixed(2)+'% '+cursor.toFixed(2)+'%'}).join(',');
  const donut='<div class="category-donut-wrap"><div class="donut-chart" role="img" aria-label="Spending by category for '+esc(monthKey)+'" style="background:conic-gradient('+segments+')"><div class="donut-center"><strong>'+money(total)+'</strong><small>Total spent</small></div></div></div>';
- const legend='<div class="category-legend">'+cats.map(([name,value],i)=>'<button type="button" data-category-filter="'+esc(name).replace(/"/g,'&quot;')+'" title="View transactions in '+esc(name)+'"><span class="category-swatch" style="background:'+palette[i%palette.length]+'"></span><span class="cat-name">'+esc(name)+'</span><span class="cat-value">'+money(value)+'</span></button>').join('')+'</div>';
+ const legend='<div class="category-legend">'+cats.map(([name,value],i)=>'<button type="button" data-category-filter="'+(name==='Other'?'':esc(name).replace(/"/g,'&quot;'))+'" title="View transactions in '+esc(name)+'"><span class="category-swatch" style="background:'+palette[i%palette.length]+'"></span><span class="cat-name">'+esc(name)+'</span><span class="cat-value">'+money(value)+'</span></button>').join('')+'</div>';
  container.innerHTML=donut+legend;
 }
 function showMonthDetail(key,rows,targetId){
