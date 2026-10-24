@@ -25,13 +25,13 @@
   <div class="sidebar-spacer"></div>
   <div class="privacy-card"><span class="privacy-dot"></span><div><strong>Private by default</strong><small>Your records stay on this device.</small></div></div>
   <button class="sidebar-add" type="button" data-open-quickadd>＋ <span>Add transaction</span></button>
-  <div class="sidebar-tools"><details class="utility-menu"><summary>Data tools <span>⌄</span></summary><div class="utility-popover"><label class="file-action"><span>Import CSV</span><input id="importCsv" type="file" accept=".csv,text/csv" aria-label="Import transactions from CSV"></label><span id="importMessage" class="small" role="status" aria-live="polite"></span><button class="secondary" id="exportCsv">Export CSV</button><button type="button" class="khata-cta" data-open-tab="debts">Split bills &amp; record money</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></details></div>
 </aside>
 <div class="app-main">
 <header class="topbar">
   <div class="mobile-brand">Ledger<span>.</span></div>
   <div class="topbar-title"><span class="eyebrow">YOUR MONEY, CLEARLY</span><strong id="pageTitle">Overview</strong></div>
-  <div class="header-actions"><span id="storageStatus" role="status" aria-live="polite">Checking local storage…</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">Dark mode</button></div>
+  <div class="header-actions"><span id="storageStatus" role="status" aria-live="polite">Checking local storage…</span><details class="utility-menu"><summary aria-label="Open data tools">Tools <span>⌄</span></summary><div class="utility-popover"><label class="file-action"><span>Import CSV</span><input id="importCsv" type="file" accept=".csv,text/csv" aria-label="Import transactions from CSV"></label><span id="importMessage" class="small" role="status" aria-live="polite"></span><button class="secondary" id="exportCsv">Export CSV</button><button type="button" class="khata-cta" data-open-tab="debts">Split bills &amp; record money</button><button class="secondary" id="exportJson">Backup JSON</button><label style="display:inline-flex"><span class="hidden">Restore JSON backup</span><input id="importJson" type="file" accept="application/json,.json" style="max-width:190px"></label></div></details>
+</aside><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">Dark mode</button></div>
 </header>
 <main class="wrap">
 <div class="toolbar"><div><h1 id="welcomeTitle">Your money, clearly.</h1><div class="notice">A clear picture of your finances, stored on this device.</div></div><button class="primary-add" type="button" data-open-quickadd>＋ Add transaction</button></div>
