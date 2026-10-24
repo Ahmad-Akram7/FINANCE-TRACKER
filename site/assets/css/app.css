@@ -197,3 +197,7 @@ html[data-theme="dark"] .quick-add-dialog{background:var(--card);color:var(--ink
 .header-actions .utility-popover{top:calc(100% + 8px);bottom:auto;left:auto;right:0}
 .header-actions .utility-popover .khata-cta{white-space:normal}
 @media(max-width:760px){.header-actions .utility-popover{position:fixed;top:auto;bottom:82px;left:12px;right:12px;width:auto;max-height:65vh;overflow:auto}}
+
+.nav-icon svg,.mobile-nav-item>span svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mobile-nav-item>span{display:grid;place-items:center;min-height:22px}
+@media(max-width:760px){.mobile-nav-item>span svg{width:19px;height:19px}}
