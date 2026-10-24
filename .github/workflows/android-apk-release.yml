@@ -3,11 +3,10 @@ name: Build Android APK and publish GitHub Release
 on:
   push:
     branches: [main]
-    paths:
-      - ".github/workflows/android-apk-release.yml"
-  push_tags:
     tags:
       - "android-v*"
+    paths:
+      - ".github/workflows/android-apk-release.yml"
   workflow_dispatch:
     inputs:
       release_tag:
