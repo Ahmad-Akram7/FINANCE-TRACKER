@@ -31,9 +31,10 @@ This is an **illustrative UI preview**, not a live screenshot or proof that a de
 | Interface | Best for | Data location |
 |---|---|---|
 | Browser app (`site/`) | Visual dashboard, budgets, goals, CSV, khata | IndexedDB + localStorage |
+| Android APK | Bundled mobile interface | Android WebView local storage |
 | Python CLI (`finance_tracker/`) | Terminal workflows, filtering, reports, CSV export | Local SQLite database |
 
-**They do not sync.** Browser records are not available in the CLI database and vice versa.
+**They do not sync.** Browser records are not available in the Android app or CLI database and vice versa.
 
 ## Run the browser app locally
 
@@ -64,6 +65,15 @@ npx.cmd wrangler@latest pages deploy site --project-name finance-tracker
 
 Use your own clone path if different. `npx.cmd` avoids the PowerShell script-policy issue that can block `npx.ps1`. This does not update GitHub Pages.
 
+## Android APK
+
+The [Android APK workflow](.github/workflows/android-apk-release.yml) wraps the static app with Capacitor, builds an installable APK, and attaches it to a GitHub Release.
+
+- [Download releases](https://github.com/Ahmad-Akram7/FINANCE-TRACKER/releases)
+- See [Android installation and data-safety notes](Docs/ANDROID-APK.md).
+
+The first APK is debug-signed for testing. App data is separate from the browser version, is not encrypted at rest by this app, and does not sync to the CLI or other devices. Export JSON backups regularly.
+
 ## Run the Python CLI
 
 Python 3.9+:
@@ -88,7 +98,7 @@ See [the CLI guide](FINANCE_README.md).
 ├── requirements_finance.txt
 ├── setup.py
 ├── Docs/                       # Audit, research, feature matrix, visuals
-└── .github/workflows/          # Validation and GitHub Pages deployment
+└── .github/workflows/          # Validation, Pages deployment, Android release
 ```
 
 Root-level Python modules such as `cli.py`, `core.py`, and `models.py` are compatibility shims for older imports and scripts. They are intentionally retained to avoid breaking existing usage.
