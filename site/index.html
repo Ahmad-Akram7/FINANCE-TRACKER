@@ -92,6 +92,10 @@
 </section>
 <div class="footer">Records are stored in this browser's IndexedDB. Export backups regularly; clearing browser data can erase this device's copy. This is a tracking tool, not financial advice.</div>
 </main>
+<dialog id="planDialog" class="plan-dialog" aria-labelledby="planDialogTitle">
+<div class="dialog-heading"><div><span class="eyebrow">YOUR PLAN</span><h2 id="planDialogTitle">Budgets &amp; goals</h2><p class="small">Choose what you want to manage.</p></div><button type="button" class="dialog-close" id="closePlanDialog" aria-label="Close plan menu">×</button></div>
+<div class="plan-menu-options"><button type="button" data-tab="budgets"><span>▤</span><strong>Budgets</strong><small>Set monthly spending limits</small></button><button type="button" data-tab="goals"><span>◎</span><strong>Savings goals</strong><small>Track progress toward targets</small></button></div>
+</dialog>
 <dialog id="quickAddDialog" class="quick-add-dialog" aria-labelledby="quickAddTitle">
 <div class="dialog-heading"><div><span class="eyebrow">QUICK ENTRY</span><h2 id="quickAddTitle">Add transaction</h2><p class="small">Record it now. It stays on this device.</p></div><button type="button" class="dialog-close" id="closeQuickAdd" aria-label="Close add transaction">×</button></div>
 <form id="quickAddForm" class="formgrid">
@@ -107,6 +111,7 @@
   <button class="mobile-nav-item active" type="button" data-tab="overview"><span>⌂</span><small>Home</small></button>
   <button class="mobile-nav-item" type="button" data-tab="transactions"><span>↔</span><small>Activity</small></button>
   <button class="mobile-nav-item mobile-add" type="button" data-open-quickadd aria-label="Add transaction">＋</button>
+  <button class="mobile-nav-item" type="button" data-open-plan><span>▤</span><small>Plan</small></button>
   <button class="mobile-nav-item" type="button" data-tab="reports"><span>▥</span><small>Insights</small></button>
   <button class="mobile-nav-item" type="button" data-tab="debts"><span>⇄</span><small>Khata</small></button>
 </nav>
